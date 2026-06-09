@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <radialGradient id="bg4" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFFDE7"/>
+      <stop offset="100%" stop-color="#FFF9C4"/>
+    </radialGradient>
+    <radialGradient id="body4" cx="40%" cy="35%" r="60%">
+      <stop offset="0%" stop-color="#FFF176"/>
+      <stop offset="55%" stop-color="#FFD600"/>
+      <stop offset="100%" stop-color="#F57F17"/>
+    </radialGradient>
+    <radialGradient id="face4" cx="45%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#FFFDE7"/>
+      <stop offset="100%" stop-color="#FFF9C4"/>
+    </radialGradient>
+    <filter id="boltGlow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="drop4">
+      <feDropShadow dx="2" dy="4" stdDeviation="4" flood-color="rgba(245,127,23,0.25)"/>
+    </filter>
+  </defs>
+
+  <circle cx="100" cy="100" r="90" fill="url(#bg4)" opacity="0.55"/>
+
+  <!-- Lightning bolt ears -->
+  <g filter="url(#boltGlow)">
+    <polygon points="72,72 80,50 85,65 93,45 86,70" fill="#FFD600"/>
+    <polygon points="72,72 80,50 85,65 93,45 86,70" fill="#FFEE58" opacity="0.5"/>
+    <polygon points="108,72 116,50 121,65 129,45 122,70" fill="#FFD600"/>
+    <polygon points="108,72 116,50 121,65 129,45 122,70" fill="#FFEE58" opacity="0.5"/>
+  </g>
+
+  <!-- Electric sparks around body -->
+  <g filter="url(#boltGlow)">
+    <path d="M55 95 L60 88 L57 94 L64 90" stroke="#FFD600" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M145 95 L140 88 L143 94 L136 90" stroke="#FFD600" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M60 118 L66 112 L63 118 L70 115" stroke="#FFEE58" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M140 118 L134 112 L137 118 L130 115" stroke="#FFEE58" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- Body -->
+  <ellipse cx="100" cy="130" rx="42" ry="40" fill="url(#body4)" filter="url(#drop4)"/>
+  <ellipse cx="100" cy="130" rx="26" ry="27" fill="url(#face4)"/>
+
+  <!-- Arms -->
+  <ellipse cx="62" cy="128" rx="13" ry="10" fill="#FFD600" transform="rotate(-25,62,128)"/>
+  <ellipse cx="138" cy="128" rx="13" ry="10" fill="#FFD600" transform="rotate(25,138,128)"/>
+  <circle cx="52" cy="138" r="10" fill="#FFF176"/>
+  <circle cx="148" cy="138" r="10" fill="#FFF176"/>
+
+  <!-- Legs -->
+  <ellipse cx="82" cy="163" rx="14" ry="9" fill="#FFD600"/>
+  <ellipse cx="118" cy="163" rx="14" ry="9" fill="#FFD600"/>
+  <ellipse cx="80" cy="171" rx="13" ry="7" fill="#FFF176"/>
+  <ellipse cx="120" cy="171" rx="13" ry="7" fill="#FFF176"/>
+
+  <!-- Zig-zag tail -->
+  <polyline points="138,148 150,140 144,155 158,148 152,162" stroke="#F57F17" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Head -->
+  <circle cx="100" cy="90" r="36" fill="url(#body4)" filter="url(#drop4)"/>
+  <ellipse cx="100" cy="95" rx="22" ry="19" fill="url(#face4)"/>
+
+  <!-- Hamster cheek pouches -->
+  <ellipse cx="76" cy="96" rx="14" ry="10" fill="#FFE082" opacity="0.7"/>
+  <ellipse cx="124" cy="96" rx="14" ry="10" fill="#FFE082" opacity="0.7"/>
+
+  <!-- Eyes — star shaped pupils -->
+  <circle cx="88" cy="87" r="8" fill="white"/>
+  <circle cx="112" cy="87" r="8" fill="white"/>
+  <circle cx="90" cy="88" r="5" fill="#E65100"/>
+  <circle cx="114" cy="88" r="5" fill="#E65100"/>
+  <circle cx="91" cy="86" r="2.5" fill="white"/>
+  <circle cx="115" cy="86" r="2.5" fill="white"/>
+  <!-- star sparkle in eye -->
+  <path d="M90 88 L90.5 86 L91 88 L93 88.5 L91 89 L90.5 91 L90 89 L88 88.5Z" fill="white" opacity="0.8" transform="scale(0.6) translate(60,57)"/>
+
+  <!-- Blush -->
+  <ellipse cx="78" cy="98" rx="10" ry="6" fill="#FFCA28" opacity="0.5"/>
+  <ellipse cx="122" cy="98" rx="10" ry="6" fill="#FFCA28" opacity="0.5"/>
+
+  <!-- Nose -->
+  <ellipse cx="100" cy="97" rx="4" ry="3" fill="#E65100"/>
+  <path d="M91 104 Q100 112 109 104" stroke="#E65100" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+  <!-- Tiny bolts floating -->
+  <path d="M62 76 L65 70 L63 75 L68 72" stroke="#FFD600" stroke-width="2" fill="none" stroke-linecap="round" filter="url(#boltGlow)"/>
+  <path d="M137 73 L140 67 L138 72 L143 69" stroke="#FFD600" stroke-width="2" fill="none" stroke-linecap="round" filter="url(#boltGlow)"/>
+</svg>

@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meta World</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:        #050810;
+      --surface:   #0c1120;
+      --surface2:  #111827;
+      --border:    rgba(99,179,237,0.15);
+      --accent:    #3b82f6;
+      --accent2:   #06b6d4;
+      --accent3:   #8b5cf6;
+      --gold:      #f59e0b;
+      --text:      #e2e8f0;
+      --text-dim:  #64748b;
+      --glow:      0 0 20px rgba(59,130,246,0.4);
+      --glow2:     0 0 40px rgba(6,182,212,0.2);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Noto Sans KR', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ─── STARFIELD ─── */
+    #stars {
+      position: fixed; inset: 0; z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .star {
+      position: absolute;
+      border-radius: 50%;
+      background: #fff;
+      animation: twinkle var(--d, 3s) var(--delay, 0s) infinite alternate;
+    }
+    @keyframes twinkle {
+      from { opacity: var(--lo, .1); transform: scale(1); }
+      to   { opacity: var(--hi, .8); transform: scale(1.4); }
+    }
+
+    /* nebula blobs */
+    body::before, body::after {
+      content: '';
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    body::before {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(59,130,246,.12), transparent 70%);
+      top: -100px; left: -100px;
+      animation: drift 18s ease-in-out infinite alternate;
+    }
+    body::after {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(139,92,246,.1), transparent 70%);
+      bottom: -100px; right: -100px;
+      animation: drift 22s ease-in-out infinite alternate-reverse;
+    }
+    @keyframes drift {
+      from { transform: translate(0,0); }
+      to   { transform: translate(60px, 40px); }
+    }
+
+    /* ─── LAYOUT ─── */
+    .wrap { position: relative; z-index: 1; }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 40px;
+      height: 64px;
+      background: rgba(5,8,16,.8);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Orbitron', monospace;
+      font-size: 1.3rem;
+      font-weight: 900;
+      letter-spacing: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .nav-logo span { color: var(--accent3); -webkit-text-fill-color: var(--accent3); }
+    .nav-right { display: flex; align-items: center; gap: 16px; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-size: .85rem;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all .25s;
+      border: none;
+      letter-spacing: .5px;
+    }
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); box-shadow: var(--glow); }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff;
+    }
+    .btn-primary:hover { opacity: .85; box-shadow: var(--glow); transform: translateY(-1px); }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center;
+      padding: 100px 24px 60px;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 16px;
+      border: 1px solid rgba(59,130,246,.35);
+      border-radius: 999px;
+      font-size: .75rem;
+      color: var(--accent2);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+      animation: fadeUp .8s ease both;
+    }
+    .hero-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent2);
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 1; }
+      50% { opacity: .3; }
+    }
+    .hero h1 {
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(3rem, 8vw, 7rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -1px;
+      background: linear-gradient(135deg, #fff 0%, var(--accent) 50%, var(--accent2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: fadeUp .8s .15s ease both;
+    }
+    .hero-sub {
+      margin-top: 8px;
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      font-weight: 400;
+      color: var(--accent3);
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      animation: fadeUp .8s .25s ease both;
+    }
+    .hero-desc {
+      margin-top: 24px;
+      font-size: 1.05rem;
+      color: var(--text-dim);
+      max-width: 520px;
+      line-height: 1.75;
+      animation: fadeUp .8s .35s ease both;
+    }
+    .hero-actions {
+      margin-top: 40px;
+      display: flex; gap: 16px;
+      animation: fadeUp .8s .45s ease both;
+    }
+    .btn-lg { padding: 14px 36px; font-size: 1rem; border-radius: 12px; }
+
+    /* orbiting ring */
+    .hero-ring {
+      position: absolute;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      border: 1px solid rgba(59,130,246,.1);
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      animation: spin 40s linear infinite;
+      pointer-events: none;
+    }
+    .hero-ring::after {
+      content: '';
+      position: absolute;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      top: -4px; left: 50%;
+      box-shadow: 0 0 12px var(--accent);
+    }
+    .hero-ring2 {
+      width: 700px; height: 700px;
+      border-color: rgba(139,92,246,.07);
+      animation-duration: 60s;
+      animation-direction: reverse;
+    }
+    @keyframes spin { to { transform: translate(-50%,-50%) rotate(360deg); } }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* stats bar */
+    .stats-bar {
+      margin-top: 64px;
+      display: flex; gap: 48px; justify-content: center; flex-wrap: wrap;
+      animation: fadeUp .8s .6s ease both;
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      font-family: 'Orbitron', monospace;
+      font-size: 2rem; font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .stat-label { font-size: .78rem; color: var(--text-dim); letter-spacing: 1px; margin-top: 4px; }
+
+    /* ─── SECTION ─── */
+    section { padding: 100px 24px; }
+    .section-label {
+      font-size: .75rem; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--accent2); margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 700; line-height: 1.2;
+    }
+    .section-title em { font-style: normal; color: var(--accent); }
+    .container { max-width: 1200px; margin: 0 auto; }
+
+    /* ─── GAMES GRID ─── */
+    #games { background: transparent; }
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 24px;
+      margin-top: 48px;
+    }
+
+    .game-card {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform .35s cubic-bezier(.23,1,.32,1), box-shadow .35s;
+      text-decoration: none; color: inherit;
+    }
+    .game-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 24px 48px rgba(0,0,0,.5), var(--glow);
+      border-color: rgba(59,130,246,.4);
+    }
+    .game-card.coming-soon {
+      opacity: .55;
+      cursor: default;
+    }
+    .game-card.coming-soon:hover {
+      transform: none;
+      box-shadow: none;
+      border-color: var(--border);
+    }
+
+    .card-banner {
+      height: 160px;
+      position: relative;
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .card-icon { font-size: 4rem; position: relative; z-index: 1; }
+    .card-banner::before {
+      content: '';
+      position: absolute; inset: 0;
+      opacity: .18;
+    }
+    /* individual card themes */
+    .game-card[data-game="kbo"] .card-banner { background: linear-gradient(135deg, #1a0530, #0d1b2a); }
+    .game-card[data-game="kbo"] .card-banner::before { background: radial-gradient(circle at 30% 50%, #f59e0b, transparent 60%); opacity: .3; }
+    .game-card[data-game="soccer"] .card-banner { background: linear-gradient(135deg, #0a1f0a, #0d2a1b); }
+    .game-card[data-game="soccer"] .card-banner::before { background: radial-gradient(circle at 70% 40%, #22c55e, transparent 60%); opacity: .3; }
+    .game-card[data-game="lol"] .card-banner { background: linear-gradient(135deg, #0d0a1f, #1a0d2a); }
+    .game-card[data-game="lol"] .card-banner::before { background: radial-gradient(circle at 50% 50%, #8b5cf6, transparent 60%); opacity: .35; }
+    .game-card[data-game="gacha"] .card-banner { background: linear-gradient(135deg, #1a0a2e, #2d1b4e); }
+    .game-card[data-game="gacha"] .card-banner::before { background: radial-gradient(circle at 40% 40%, #FF6B9D, transparent 55%), radial-gradient(circle at 70% 70%, #C77DFF, transparent 55%); opacity: .35; }
+    .game-card[data-game="card"] .card-banner { background: linear-gradient(135deg, #1f100a, #2a1a0d); }
+    .game-card[data-game="janggi"] .card-banner { background: linear-gradient(135deg, #0a1520, #0d2030); }
+    .game-card[data-game="billiards"] .card-banner { background: linear-gradient(135deg, #061a06, #0d2010); }
+    .game-card[data-game="bowling"] .card-banner { background: linear-gradient(135deg, #1a0a10, #2a0d18); }
+
+    .card-body { padding: 24px; }
+    .card-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+    .tag {
+      font-size: .7rem; padding: 3px 10px;
+      border-radius: 999px; letter-spacing: .5px;
+    }
+    .tag-active { background: rgba(59,130,246,.15); color: var(--accent); border: 1px solid rgba(59,130,246,.3); }
+    .tag-new    { background: rgba(245,158,11,.15); color: var(--gold);   border: 1px solid rgba(245,158,11,.3); }
+    .tag-soon   { background: rgba(100,116,139,.1); color: var(--text-dim); border: 1px solid rgba(100,116,139,.2); }
+    .card-title {
+      font-family: 'Orbitron', monospace;
+      font-size: 1.15rem; font-weight: 700; margin-bottom: 8px;
+    }
+    .card-desc { font-size: .85rem; color: var(--text-dim); line-height: 1.65; }
+    .card-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 24px;
+      border-top: 1px solid var(--border);
+    }
+    .card-meta { font-size: .78rem; color: var(--text-dim); }
+    .card-play {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: .82rem; color: var(--accent);
+      font-weight: 500;
+    }
+    .card-play svg { transition: transform .25s; }
+    .game-card:hover .card-play svg { transform: translateX(4px); }
+
+    /* ─── FEATURES ─── */
+    #features { background: var(--surface2); }
+    .features-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 24px; margin-top: 48px;
+    }
+    .feat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px 28px;
+      transition: border-color .25s;
+    }
+    .feat-card:hover { border-color: rgba(59,130,246,.4); }
+    .feat-icon {
+      width: 52px; height: 52px;
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem;
+      margin-bottom: 20px;
+    }
+    .feat-card:nth-child(1) .feat-icon { background: rgba(59,130,246,.15); }
+    .feat-card:nth-child(2) .feat-icon { background: rgba(245,158,11,.15); }
+    .feat-card:nth-child(3) .feat-icon { background: rgba(139,92,246,.15); }
+    .feat-card:nth-child(4) .feat-icon { background: rgba(6,182,212,.15); }
+    .feat-title { font-weight: 700; margin-bottom: 10px; font-size: 1rem; }
+    .feat-desc { font-size: .85rem; color: var(--text-dim); line-height: 1.7; }
+
+    /* ─── CTA ─── */
+    #cta {
+      text-align: center;
+      background: transparent;
+    }
+    .cta-box {
+      max-width: 680px; margin: 0 auto;
+      padding: 72px 48px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      position: relative; overflow: hidden;
+    }
+    .cta-box::before {
+      content: '';
+      position: absolute;
+      width: 400px; height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(59,130,246,.08), transparent 70%);
+      top: 50%; left: 50%; transform: translate(-50%,-50%);
+    }
+    .cta-box h2 {
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      font-weight: 700; margin-bottom: 16px;
+      position: relative;
+    }
+    .cta-box p { color: var(--text-dim); margin-bottom: 36px; line-height: 1.7; position: relative; }
+    .cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; position: relative; }
+
+    /* ─── MODAL ─── */
+    .modal-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(0,0,0,.7);
+      backdrop-filter: blur(8px);
+      align-items: center; justify-content: center;
+    }
+    .modal-overlay.open { display: flex; animation: fadeIn .2s ease; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 40px;
+      width: 100%; max-width: 420px;
+      position: relative;
+      animation: slideUp .3s cubic-bezier(.23,1,.32,1);
+    }
+    @keyframes slideUp {
+      from { transform: translateY(40px); opacity: 0; }
+      to   { transform: translateY(0);    opacity: 1; }
+    }
+    .modal-close {
+      position: absolute; top: 16px; right: 16px;
+      background: none; border: none; color: var(--text-dim);
+      cursor: pointer; font-size: 1.4rem; line-height: 1;
+      transition: color .2s;
+    }
+    .modal-close:hover { color: var(--text); }
+    .modal h2 {
+      font-family: 'Orbitron', monospace;
+      font-size: 1.4rem; font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .modal-sub { font-size: .85rem; color: var(--text-dim); margin-bottom: 32px; }
+    .tab-row {
+      display: flex; gap: 0;
+      background: var(--surface2);
+      border-radius: 10px; padding: 4px;
+      margin-bottom: 28px;
+    }
+    .tab-btn {
+      flex: 1; padding: 8px; border: none; border-radius: 8px;
+      background: none; color: var(--text-dim);
+      cursor: pointer; font-size: .88rem;
+      font-family: 'Noto Sans KR', sans-serif;
+      transition: all .2s;
+    }
+    .tab-btn.active { background: var(--surface); color: var(--text); box-shadow: 0 2px 8px rgba(0,0,0,.3); }
+    .form-group { margin-bottom: 18px; }
+    .form-group label { display: block; font-size: .82rem; color: var(--text-dim); margin-bottom: 8px; }
+    .form-group input {
+      width: 100%; padding: 12px 16px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-size: .9rem;
+      font-family: 'Noto Sans KR', sans-serif;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .form-group input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,130,246,.1); }
+    .form-submit {
+      width: 100%; padding: 13px;
+      border-radius: 10px; border: none;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff; font-size: .95rem;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-weight: 700; cursor: pointer;
+      transition: opacity .2s, transform .2s;
+    }
+    .form-submit:hover { opacity: .85; transform: translateY(-1px); }
+    .form-note { font-size: .78rem; color: var(--text-dim); text-align: center; margin-top: 16px; }
+
+    /* user-logged-in state in nav */
+    .user-chip {
+      display: none; align-items: center; gap: 10px;
+      padding: 6px 14px 6px 8px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+    }
+    .user-chip.visible { display: flex; }
+    .user-avatar {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent3));
+      display: flex; align-items: center; justify-content: center;
+      font-size: .8rem; font-weight: 700;
+    }
+    .user-name { font-size: .82rem; font-weight: 500; }
+    .btn-logout {
+      background: none; border: none; color: var(--text-dim);
+      cursor: pointer; font-size: .78rem; padding: 0;
+      font-family: 'Noto Sans KR', sans-serif;
+      transition: color .2s;
+    }
+    .btn-logout:hover { color: var(--text); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 24px;
+      text-align: center;
+      position: relative; z-index: 1;
+    }
+    .footer-logo {
+      font-family: 'Orbitron', monospace;
+      font-size: 1rem; font-weight: 900; letter-spacing: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+    }
+    .footer-text { font-size: .8rem; color: var(--text-dim); }
+
+    /* toast */
+    .toast {
+      position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(80px);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 24px;
+      font-size: .88rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,.4);
+      z-index: 300;
+      transition: transform .35s cubic-bezier(.23,1,.32,1), opacity .35s;
+      opacity: 0;
+      white-space: nowrap;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    /* divider */
+    .divider { height: 1px; background: var(--border); margin: 0 24px; }
+
+    @media (max-width: 600px) {
+      nav { padding: 0 20px; }
+      .hero h1 { font-size: 2.8rem; }
+      .modal { padding: 28px 20px; }
+      .cta-box { padding: 48px 24px; }
+      .stats-bar { gap: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- STARFIELD -->
+<div id="stars"></div>
+
+<div class="wrap">
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">META<span>·</span>WORLD</div>
+  <div class="nav-right">
+    <div class="user-chip" id="userChip">
+      <div class="user-avatar" id="userAvatar"></div>
+      <span class="user-name" id="userName"></span>
+      <button class="btn-logout" onclick="logout()">로그아웃</button>
+    </div>
+    <button class="btn btn-ghost" id="btnLogin" onclick="openModal('login')">로그인</button>
+    <button class="btn btn-primary" id="btnRegister" onclick="openModal('register')">회원가입</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-ring"></div>
+  <div class="hero-ring hero-ring2"></div>
+
+  <div class="hero-badge">🌐 게임 유니버스에 오신 걸 환영합니다</div>
+  <h1>META WORLD</h1>
+  <div class="hero-sub">Your Universe of Games</div>
+  <p class="hero-desc">
+    KBO 시뮬레이션부터 축구리그, 롤 밴픽까지 — 모든 게임이 하나의 세계에서.<br>
+    로그인하고 진행도와 업적을 저장하세요.
+  </p>
+  <div class="hero-actions">
+    <button class="btn btn-primary btn-lg" onclick="document.getElementById('games').scrollIntoView({behavior:'smooth'})">
+      🎮 게임 둘러보기
+    </button>
+    <button class="btn btn-ghost btn-lg" onclick="openModal('register')">
+      ✨ 무료 가입
+    </button>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat"><div class="stat-num">4</div><div class="stat-label">플레이 가능 게임</div></div>
+    <div class="stat"><div class="stat-num">4+</div><div class="stat-label">출시 예정</div></div>
+    <div class="stat"><div class="stat-num">∞</div><div class="stat-label">무한한 재미</div></div>
+  </div>
+</section>
+
+<!-- GAMES -->
+<section id="games">
+  <div class="container">
+    <div class="section-label">🎮 게임 라인업</div>
+    <div class="section-title">지금 <em>플레이</em> 가능한 게임</div>
+
+    <div class="games-grid">
+
+      <!-- KBO -->
+      <div class="game-card" data-game="kbo" onclick="launchGame('kbo')">
+        <div class="card-banner">
+          <div class="card-icon">⚾</div>
+        </div>
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="tag tag-active">플레이 가능</span>
+            <span class="tag tag-new">인기</span>
+          </div>
+          <div class="card-title">KBO 시뮬레이션</div>
+          <div class="card-desc">한국 야구의 모든 것을 시뮬레이션. 팀을 선택하고 시즌을 이끌어 KBO 우승컵을 들어올리세요.</div>
+        </div>
+        <div class="card-footer">
+          <span class="card-meta">스포츠 · 시뮬레이션</span>
+          <span class="card-play">
+            플레이하기
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </span>
+        </div>
+      </div>
+
+      <!-- SOCCER -->
+      <div class="game-card" data-game="soccer" onclick="launchGame('soccer')">
+        <div class="card-banner">
+          <div class="card-icon">⚽</div>
+        </div>
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="tag tag-active">플레이 가능</span>
+          </div>
+          <div class="card-title">축구리그 시뮬레이션</div>
+          <div class="card-desc">감독이 되어 팀을 전술적으로 이끄세요. K리그부터 EPL까지 다양한 리그에 도전하세요.</div>
+        </div>
+        <div class="card-footer">
+          <span class="card-meta">스포츠 · 전략</span>
+          <span class="card-play">
+            플레이하기
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </span>
+        </div>
+      </div>
+
+      <!-- LOL BAMPICK -->
+      <div class="game-card" data-game="lol" onclick="launchGame('lol')">
+        <div class="card-banner">
+          <div class="card-icon">🏆</div>
+        </div>
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="tag tag-active">플레이 가능</span>
+            <span class="tag tag-new">NEW</span>
+          </div>
+          <div class="card-title">롤 밴픽 게임</div>
+          <div class="card-desc">프로처럼 밴픽하세요. 메타를 읽고 최적의 챔피언 조합을 구성해 상대를 압도하세요.</div>
+        </div>
+        <div class="card-footer">
+          <span class="card-meta">전략 · eSports</span>
+          <span class="card-play">
+            플레이하기
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </span>
+        </div>
+      </div>
+
+      <!-- GACHA / YUMMONSTERS -->
+      <div class="game-card" data-game="gacha" onclick="launchGame('gacha')">
+        <div class="card-banner">
+          <div class="card-icon">🍔</div>
+        </div>
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="tag tag-active">플레이 가능</span>
+            <span class="tag tag-new">NEW</span>
+          </div>
+          <div class="card-title">YumMonsters! 가챠</div>
+          <div class="card-desc">냠냠 몬스터를 수집하세요! 카드팩을 열고, 가챠를 돌리고, 별 강화로 최강의 컬렉션을 만들어보세요.</div>
+        </div>
+        <div class="card-footer">
+          <span class="card-meta">수집 · 가챠 · RPG</span>
+          <span class="card-play">
+            플레이하기
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </span>
+        </div>
+      </div>
+
+      <!-- CARD GAME (coming soon) -->
+      <div class="game-card coming-soon" data-game="card">
+        <div class="card-banner">
+          <div class="card-icon">🃏</div>
+        </div>
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="tag tag-soon">출시 예정</span>
+          </div>
+          <div class="card-title">카드 게임</div>
+          <div class="card-desc">짜릿한 카드 배틀. 전략과 운이 공존하는 세계로 당신을 초대합니다.</div>
+        </div>
+        <div class="card-footer">
+          <span class="card-meta">카드 · 전략</span>
+          <span class="card-play" style="color:var(--text-dim)">준비 중 ...</span>
+        </div>
+      </div>
+
+      <!-- JANGGI (coming soon) -->
+      <div class="game-card coming-soon" data-game="janggi">
+        <div class="card-banner">
+          <div class="card-icon">♟️</div>
+        </div>
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="tag tag-soon">출시 예정</span>
+          </div>
+          <div class="card-title">장기</div>
+          <div class="card-desc">한국 전통 보드게임, 장기. AI와 대결하거나 친구와 함께 즐겨보세요.</div>
+        </div>
+        <div class="card-footer">
+          <span class="card-meta">보드 · 전통</span>
+          <span class="card-play" style="color:var(--text-dim)">준비 중 ...</span>
+        </div>
+      </div>
+
+      <!-- BILLIARDS (coming soon) -->
+      <div class="game-card coming-soon" data-game="billiards">
+        <div class="card-banner">
+          <div class="card-icon">🎱</div>
+        </div>
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="tag tag-soon">출시 예정</span>
+          </div>
+          <div class="card-title">당구</div>
+          <div class="card-desc">4구와 3구를 브라우저에서. 물리 엔진 기반의 리얼한 당구 경험을 선사합니다.</div>
+        </div>
+        <div class="card-footer">
+          <span class="card-meta">스포츠 · 물리</span>
+          <span class="card-play" style="color:var(--text-dim)">준비 중 ...</span>
+        </div>
+      </div>
+
+      <!-- BOWLING (coming soon) -->
+      <div class="game-card coming-soon" data-game="bowling">
+        <div class="card-banner">
+          <div class="card-icon">🎳</div>
+        </div>
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="tag tag-soon">출시 예정</span>
+          </div>
+          <div class="card-title">볼링</div>
+          <div class="card-desc">퍼펙트 게임을 노려라! 감각적인 볼링 시뮬레이션으로 스트라이크 퍼레이드를 선보이세요.</div>
+        </div>
+        <div class="card-footer">
+          <span class="card-meta">스포츠 · 아케이드</span>
+          <span class="card-play" style="color:var(--text-dim)">준비 중 ...</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="container">
+    <div class="section-label">✨ 플랫폼 기능</div>
+    <div class="section-title">하나의 계정으로 <em>모든 것을</em></div>
+
+    <div class="features-grid">
+      <div class="feat-card">
+        <div class="feat-icon">🔐</div>
+        <div class="feat-title">통합 로그인 시스템</div>
+        <div class="feat-desc">하나의 계정으로 모든 게임에 접근하세요. 안전하게 암호화된 로그인과 세션 관리를 제공합니다.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🏅</div>
+        <div class="feat-title">업적 & 뱃지</div>
+        <div class="feat-desc">게임별 업적을 달성하고 프로필에 뱃지를 수집하세요. 다른 플레이어와 업적을 비교해 보세요.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">📊</div>
+        <div class="feat-title">진행도 저장</div>
+        <div class="feat-desc">어디서든 이어서 플레이하세요. 모든 게임의 진행 상황이 클라우드에 자동 저장됩니다.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🚀</div>
+        <div class="feat-title">계속 업데이트</div>
+        <div class="feat-desc">새로운 게임과 컨텐츠가 지속적으로 추가됩니다. 카드게임, 장기, 당구, 볼링이 곧 출시됩니다!</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="container">
+    <div class="cta-box">
+      <h2>지금 Meta World에 합류하세요</h2>
+      <p>무료로 가입하고 모든 게임을 즐기세요. 진행도와 업적이 자동으로 저장됩니다.</p>
+      <div class="cta-actions">
+        <button class="btn btn-primary btn-lg" onclick="openModal('register')">✨ 무료로 시작하기</button>
+        <button class="btn btn-ghost btn-lg" onclick="openModal('login')">이미 계정이 있어요</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">META · WORLD</div>
+  <div class="footer-text">© 2025 Meta World. All rights reserved. · GitHub Pages로 제공됩니다.</div>
+</footer>
+
+</div><!-- /wrap -->
+
+<!-- ─── AUTH MODAL ─── -->
+<div class="modal-overlay" id="authModal" onclick="onOverlayClick(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <h2 id="modalTitle">로그인</h2>
+    <p class="modal-sub" id="modalSub">Meta World에 오신 걸 환영합니다</p>
+
+    <div class="tab-row">
+      <button class="tab-btn active" id="tabLogin" onclick="switchTab('login')">로그인</button>
+      <button class="tab-btn" id="tabRegister" onclick="switchTab('register')">회원가입</button>
+    </div>
+
+    <!-- Login Form -->
+    <div id="formLogin">
+      <div class="form-group">
+        <label>이메일 또는 닉네임</label>
+        <input type="text" id="loginId" placeholder="이메일 또는 닉네임" />
+      </div>
+      <div class="form-group">
+        <label>비밀번호</label>
+        <input type="password" id="loginPw" placeholder="비밀번호" onkeydown="if(event.key==='Enter')doLogin()" />
+      </div>
+      <button class="form-submit" onclick="doLogin()">로그인</button>
+      <div class="form-note">GitHub Pages에서는 로컬스토리지를 통해 계정이 관리됩니다.</div>
+    </div>
+
+    <!-- Register Form -->
+    <div id="formRegister" style="display:none">
+      <div class="form-group">
+        <label>닉네임</label>
+        <input type="text" id="regName" placeholder="사용할 닉네임" />
+      </div>
+      <div class="form-group">
+        <label>이메일</label>
+        <input type="email" id="regEmail" placeholder="이메일 주소" />
+      </div>
+      <div class="form-group">
+        <label>비밀번호</label>
+        <input type="password" id="regPw" placeholder="8자 이상" />
+      </div>
+      <div class="form-group">
+        <label>비밀번호 확인</label>
+        <input type="password" id="regPw2" placeholder="비밀번호를 다시 입력하세요" onkeydown="if(event.key==='Enter')doRegister()" />
+      </div>
+      <button class="form-submit" onclick="doRegister()">계정 만들기</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script src="/js/mw-api.js"></script>
+<script>
+// ─── STARS ───
+(function(){
+  const container = document.getElementById('stars');
+  for(let i = 0; i < 180; i++){
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = Math.random() * 2.5 + .5;
+    s.style.cssText = `
+      width:${size}px; height:${size}px;
+      top:${Math.random()*100}%; left:${Math.random()*100}%;
+      --d:${(Math.random()*4+2).toFixed(1)}s;
+      --delay:-${(Math.random()*5).toFixed(1)}s;
+      --lo:${(Math.random()*.2).toFixed(2)};
+      --hi:${(Math.random()*.5+.3).toFixed(2)};
+    `;
+    container.appendChild(s);
+  }
+})();
+
+// ─── AUTH HELPERS (서버 연동) ───
+// 계정/세션은 이제 서버(MongoDB)에서 관리합니다. MW 헬퍼는 /js/mw-api.js 참고.
+function getSession(){ return MW.session(); }
+
+// ─── UI STATE ───
+function refreshNav(){
+  const session = getSession();
+  const chip = document.getElementById('userChip');
+  const btnL = document.getElementById('btnLogin');
+  const btnR = document.getElementById('btnRegister');
+  if(session){
+    chip.classList.add('visible');
+    document.getElementById('userAvatar').textContent = session.name[0].toUpperCase();
+    document.getElementById('userName').textContent = session.name;
+    btnL.style.display = 'none';
+    btnR.style.display = 'none';
+  } else {
+    chip.classList.remove('visible');
+    btnL.style.display = '';
+    btnR.style.display = '';
+  }
+}
+
+function logout(){
+  MW.logout();
+  refreshNav();
+  showToast('로그아웃 되었습니다.');
+}
+
+// ─── MODAL ───
+function openModal(tab){
+  document.getElementById('authModal').classList.add('open');
+  switchTab(tab||'login');
+}
+function closeModal(){
+  document.getElementById('authModal').classList.remove('open');
+}
+function onOverlayClick(e){
+  if(e.target === document.getElementById('authModal')) closeModal();
+}
+function switchTab(tab){
+  const isLogin = tab === 'login';
+  document.getElementById('tabLogin').classList.toggle('active', isLogin);
+  document.getElementById('tabRegister').classList.toggle('active', !isLogin);
+  document.getElementById('formLogin').style.display = isLogin ? '' : 'none';
+  document.getElementById('formRegister').style.display = isLogin ? 'none' : '';
+  document.getElementById('modalTitle').textContent = isLogin ? '로그인' : '회원가입';
+  document.getElementById('modalSub').textContent = isLogin ? 'Meta World에 오신 걸 환영합니다' : '새 계정을 만드세요';
+}
+
+// ─── LOGIN ───
+async function doLogin(){
+  const id = document.getElementById('loginId').value.trim();
+  const pw = document.getElementById('loginPw').value;
+  if(!id || !pw){ showToast('⚠️ 모든 항목을 입력하세요.'); return; }
+  try {
+    const user = await MW.login(id, pw);
+    closeModal();
+    refreshNav();
+    showToast(`🎮 환영합니다, ${user.name}님!`);
+  } catch (e) {
+    showToast('❌ ' + e.message);
+  }
+}
+
+// ─── REGISTER ───
+async function doRegister(){
+  const name  = document.getElementById('regName').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const pw    = document.getElementById('regPw').value;
+  const pw2   = document.getElementById('regPw2').value;
+  if(!name||!email||!pw||!pw2){ showToast('⚠️ 모든 항목을 입력하세요.'); return; }
+  if(pw.length < 8){ showToast('⚠️ 비밀번호는 8자 이상이어야 합니다.'); return; }
+  if(pw !== pw2){ showToast('⚠️ 비밀번호가 일치하지 않습니다.'); return; }
+  try {
+    const user = await MW.register(name, email, pw);
+    closeModal();
+    refreshNav();
+    showToast(`✨ 가입 완료! 환영합니다, ${user.name}님!`);
+  } catch (e) {
+    showToast('⚠️ ' + e.message);
+  }
+}
+
+// ─── GAME LAUNCH ───
+function launchGame(id){
+  const session = getSession();
+  const map = {
+    kbo:    'games/kbo/index.html',
+    soccer: 'games/soccer/index.html',
+    lol:    'games/lol/index.html',
+    gacha:  'games/gacha/index.html',
+  };
+  if(!map[id]) return;
+  if(!session){
+    showToast('🔐 게임을 즐기려면 로그인하세요!');
+    setTimeout(()=>openModal('login'), 800);
+    return;
+  }
+  const names = { kbo:'KBO 시뮬레이션', soccer:'축구리그 시뮬레이션', lol:'롤 밴픽', gacha:'YumMonsters 가챠' };
+  showToast(`🚀 ${names[id]} 로딩 중...`);
+  setTimeout(()=>{ window.location.href = map[id]; }, 600);
+}
+
+// ─── TOAST ───
+let toastTimer;
+function showToast(msg){
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>el.classList.remove('show'), 2800);
+}
+
+// ─── INIT ───
+refreshNav();
+// 저장된 토큰이 유효한지 서버에 확인 (만료/삭제 시 자동 로그아웃)
+MW.me().then(() => refreshNav());
+</script>
+</body>
+</html>

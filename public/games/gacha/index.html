@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🍔 YumMonsters! — Meta World</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Gaegu:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{--p:#FF6B9D;--s:#FFD93D;--a:#6BCB77;--b:#4D96FF;--pu:#C77DFF;--dk:#1A0A2E;--cb:#2D1B4E;--pn:#231540;--tx:#FFF0F8;--td:#C9A8E0}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Jua',cursive;background:var(--dk);color:var(--tx);min-height:100vh;overflow-x:hidden;
+  background-image:radial-gradient(ellipse at 20% 50%,rgba(255,107,157,.07) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(108,71,255,.07) 0%,transparent 60%)}
+.stars{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.star{position:absolute;width:3px;height:3px;background:#fff;border-radius:50%;animation:twinkle 3s infinite}
+@keyframes twinkle{0%,100%{opacity:.15}50%{opacity:1}}
+
+/* ── LOGIN ── */
+#loginScreen{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#0D0020,#1A0A2E,#0A1628);flex-direction:column}
+.login-box{background:linear-gradient(145deg,rgba(45,27,78,.96),rgba(35,21,64,.96));border:2px solid rgba(255,107,157,.4);
+  border-radius:30px;padding:40px;width:380px;max-width:92vw;text-align:center;
+  box-shadow:0 0 60px rgba(255,107,157,.2),0 20px 60px rgba(0,0,0,.5);animation:floatIn .6s ease-out}
+@keyframes floatIn{from{opacity:0;transform:translateY(30px) scale(.95)}to{opacity:1;transform:none}}
+.login-logo{font-size:64px;margin-bottom:8px;animation:bounce 1.5s infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.login-title{font-size:32px;color:var(--p);text-shadow:0 0 20px rgba(255,107,157,.6);margin-bottom:4px}
+.login-subtitle{font-size:14px;color:var(--td);margin-bottom:28px}
+.login-input{width:100%;padding:14px 18px;background:rgba(255,255,255,.07);border:2px solid rgba(255,107,157,.3);
+  border-radius:16px;color:var(--tx);font-family:'Jua',cursive;font-size:16px;outline:none;transition:all .3s;margin-bottom:12px}
+.login-input:focus{border-color:var(--p);background:rgba(255,107,157,.1)}
+.login-input::placeholder{color:rgba(255,255,255,.3)}
+.login-history{margin-top:18px;padding:12px;background:rgba(255,255,255,.04);border-radius:12px;font-size:13px;color:var(--td)}
+
+/* ── BUTTONS ── */
+.btn{padding:14px 28px;border:none;border-radius:16px;font-family:'Jua',cursive;font-size:17px;cursor:pointer;transition:all .2s}
+.btn:active{transform:scale(.96)}
+.btn-p{background:linear-gradient(135deg,var(--p),#FF3D7F);color:#fff;box-shadow:0 4px 20px rgba(255,107,157,.4)}
+.btn-p:hover{box-shadow:0 6px 28px rgba(255,107,157,.6);transform:translateY(-2px)}
+.btn-p.w100{width:100%}
+.btn-s{background:linear-gradient(135deg,var(--pu),#9B4DFF);color:#fff;box-shadow:0 4px 20px rgba(199,125,255,.3)}
+.btn-y{background:linear-gradient(135deg,var(--s),#FFB800);color:var(--dk);box-shadow:0 4px 20px rgba(255,217,61,.3)}
+.btn-g{background:linear-gradient(135deg,var(--a),#3DBD52);color:#fff;box-shadow:0 4px 20px rgba(107,203,119,.3)}
+.btn-pu{background:linear-gradient(135deg,#9B4DFF,#6B2FCC);color:#fff;box-shadow:0 4px 20px rgba(155,77,255,.3)}
+.btn-sm{padding:8px 16px;font-size:13px}
+.btn-xs{padding:5px 12px;font-size:12px}
+.btn-red{background:linear-gradient(135deg,#FF4444,#CC2200);color:#fff;box-shadow:0 4px 16px rgba(255,68,68,.3)}
+
+/* ── GAME ── */
+#gameScreen{display:none;min-height:100vh;position:relative;z-index:1}
+.topbar{background:rgba(35,21,64,.95);border-bottom:2px solid rgba(255,107,157,.2);padding:12px 20px;
+  display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;backdrop-filter:blur(10px)}
+.topbar-logo{font-size:20px;color:var(--p)}
+.topbar-r{display:flex;gap:8px;align-items:center}
+.coin-badge{display:flex;align-items:center;gap:5px;background:rgba(255,217,61,.1);border:1px solid rgba(255,217,61,.3);
+  border-radius:20px;padding:6px 12px;font-size:14px;color:var(--s)}
+.icon-btn{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;
+  padding:6px 10px;cursor:pointer;font-size:18px;transition:all .2s;line-height:1}
+.icon-btn:hover{background:rgba(255,107,157,.15);border-color:var(--p)}
+.nav{display:flex;background:rgba(26,10,46,.9);border-top:2px solid rgba(255,107,157,.15);
+  padding:8px 12px;position:sticky;bottom:0;z-index:100;backdrop-filter:blur(10px);justify-content:space-around}
+.nav-btn{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 14px;border-radius:14px;
+  border:none;background:transparent;color:var(--td);cursor:pointer;transition:all .2s;font-family:'Jua',cursive;font-size:11px}
+.nav-btn span:first-child{font-size:22px}
+.nav-btn.active{background:rgba(255,107,157,.15);color:var(--p)}
+.nav-btn:hover{color:var(--tx);background:rgba(255,255,255,.05)}
+.content{padding:16px;max-width:900px;margin:0 auto;padding-bottom:28px}
+.page{display:none}.page.active{display:block}
+.sec{font-size:20px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+
+/* ── HOME ── */
+.welcome{background:linear-gradient(135deg,rgba(255,107,157,.15),rgba(77,150,255,.1));border:1px solid rgba(255,107,157,.25);
+  border-radius:20px;padding:18px;margin-bottom:16px;text-align:center}
+.welcome h2{font-size:19px;color:var(--s)}.welcome p{font-size:13px;color:var(--td);margin-top:3px}
+.cal-box{background:linear-gradient(135deg,rgba(108,71,255,.15),rgba(77,150,255,.1));border:1px solid rgba(108,71,255,.3);
+  border-radius:20px;padding:14px;margin-bottom:14px}
+.cal-row{display:flex;gap:5px;margin-top:10px;flex-wrap:wrap}
+.cal-day{flex:1;min-width:34px;aspect-ratio:1;border-radius:9px;display:flex;align-items:center;justify-content:center;
+  font-size:11px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04)}
+.cal-day.done{background:rgba(107,203,119,.2);border-color:rgba(107,203,119,.4);color:var(--a)}
+.cal-day.today{background:rgba(255,107,157,.2);border-color:var(--p);color:var(--p)}
+.quest-card{background:var(--pn);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:14px;
+  margin-bottom:10px;display:flex;align-items:center;gap:12px;transition:all .2s}
+.quest-card:hover{border-color:rgba(255,107,157,.3);transform:translateX(2px)}
+.q-icon{font-size:28px}.q-info{flex:1}.q-info h3{font-size:15px}.q-info p{font-size:12px;color:var(--td);margin-top:2px}
+.q-prog{font-size:11px;color:var(--a);margin-top:3px}
+.pbar{height:5px;background:rgba(255,255,255,.1);border-radius:3px;margin-top:5px;overflow:hidden}
+.pfill{height:100%;border-radius:3px;transition:width .5s}
+.q-reward{text-align:right;font-size:12px;color:var(--s);white-space:nowrap}
+/* ── CARD PACK ── */
+.pack-wrap{text-align:center;padding:16px 0}
+.pack-cnt{background:rgba(255,217,61,.15);border:1px solid rgba(255,217,61,.3);border-radius:18px;
+  padding:7px 18px;display:inline-block;font-size:15px;color:var(--s);margin-bottom:14px}
+.pack-outer{width:160px;height:230px;margin:0 auto 16px;cursor:pointer;position:relative;
+  transition:transform .3s,filter .3s;
+  filter:drop-shadow(0 8px 24px rgba(255,107,157,.5)) drop-shadow(0 0 40px rgba(199,125,255,.3))}
+.pack-outer:hover{transform:scale(1.06) rotate(-2deg) translateY(-6px);
+  filter:drop-shadow(0 16px 36px rgba(255,107,157,.7)) drop-shadow(0 0 60px rgba(199,125,255,.5))}
+.pack-outer:active{transform:scale(.97)}
+.pack-outer::after{content:'';position:absolute;inset:0;border-radius:12px;pointer-events:none;
+  background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.22) 50%,transparent 65%);
+  animation:packShine 2.4s ease-in-out infinite}
+@keyframes packShine{0%,100%{opacity:0;transform:translateX(-100%)}40%{opacity:1}60%{opacity:1;transform:translateX(100%)}}
+
+/* ── CARD REVEAL OVERLAY ── */
+.reveal-ov{position:fixed;inset:0;z-index:500;background:rgba(5,2,15,.95);display:none;align-items:center;justify-content:center;flex-direction:column}
+.reveal-ov.show{display:flex}
+.rev-card{width:190px;height:270px;border-radius:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;animation:cardRev .5s ease-out;border:3px solid rgba(255,215,0,.5);cursor:pointer;padding:12px}
+@keyframes cardRev{from{opacity:0;transform:rotateY(90deg) scale(.5)}to{opacity:1;transform:none}}
+.rev-name{font-size:13px;color:#fff;margin-top:5px;text-align:center;line-height:1.3}
+.tap-hint{color:var(--td);font-size:13px;margin-top:18px;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
+.rev-info{text-align:center;margin-top:14px;color:var(--tx)}
+.rev-info h3{font-size:19px}
+
+/* ── BINDER ── */
+.binder-tabs{display:flex;gap:5px;overflow-x:auto;padding-bottom:7px;margin-bottom:14px;scrollbar-width:none}
+.binder-tabs::-webkit-scrollbar{display:none}
+.btab{padding:7px 14px;border-radius:18px;white-space:nowrap;border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.05);cursor:pointer;font-family:'Jua',cursive;font-size:12px;color:var(--td);transition:all .2s;flex-shrink:0}
+.btab.active{background:rgba(255,107,157,.2);border-color:var(--p);color:var(--p)}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(82px,1fr));gap:8px}
+.cslot{aspect-ratio:.7;border-radius:12px;border:1.5px solid rgba(255,255,255,.1);display:flex;flex-direction:column;
+  align-items:center;justify-content:flex-start;padding-top:5px;cursor:pointer;transition:all .2s;
+  position:relative;overflow:hidden;background:rgba(255,255,255,.03)}
+.cslot.owned{border-color:rgba(255,107,157,.3);background:var(--cb)}
+.cslot.owned:hover{transform:scale(1.06);border-color:var(--p);box-shadow:0 4px 16px rgba(255,107,157,.3)}
+.cslot.locked{cursor:default;opacity:.6}
+.cnum{font-size:9px;color:var(--td);margin-bottom:3px;opacity:.7}
+.cimg-w{width:50px;height:50px;display:flex;align-items:center;justify-content:center;margin:0 auto}
+.cimg-w img{width:100%;height:100%;object-fit:contain;border-radius:5px}
+.cemoji-fb{font-size:32px;line-height:1;display:flex;align-items:center;justify-content:center}
+.cname{font-size:9px;color:var(--td);text-align:center;padding:0 3px;margin-top:3px;line-height:1.2;word-break:break-all}
+/* STAR DISPLAY on card */
+.cstars{position:absolute;bottom:10px;left:0;right:0;display:flex;justify-content:center;gap:1px;font-size:9px}
+.rbar{position:absolute;bottom:0;left:0;right:0;height:3px}
+.rbar-N{background:#888}.rbar-R{background:#4D96FF}.rbar-SR{background:#C77DFF}
+.rbar-SSR{background:linear-gradient(90deg,#FFD700,#FF6B9D,#FFD700)}
+.rbar-UR{background:linear-gradient(90deg,#FF0080,#FFD700,#00FFFF,#FF0080);background-size:200%;animation:rbw 2s linear infinite}
+@keyframes rbw{0%{background-position:0%}100%{background-position:200%}}
+.rtag{display:inline-block;padding:2px 7px;border-radius:7px;font-size:11px}
+.tN{background:rgba(136,136,136,.2);color:#aaa}.tR{background:rgba(77,150,255,.2);color:#4D96FF}
+.tSR{background:rgba(199,125,255,.2);color:#C77DFF}.tSSR{background:rgba(255,215,0,.2);color:#FFD700}
+.tUR{background:linear-gradient(90deg,rgba(255,0,128,.2),rgba(255,215,0,.2));color:#FFD700}
+.coll-prog{background:var(--pn);border-radius:14px;padding:12px 16px;margin-bottom:14px;border:1px solid rgba(255,255,255,.08)}
+.prow{display:flex;justify-content:space-between;margin-bottom:7px;font-size:13px}
+.pbarw{height:7px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden}
+.pfillw{height:100%;background:linear-gradient(90deg,var(--p),var(--pu));border-radius:3px;transition:width 1s}
+/* ── STAR UPGRADE BANNER in binder ── */
+.star-info{background:rgba(255,217,61,.06);border:1px solid rgba(255,217,61,.2);border-radius:12px;
+  padding:10px 14px;margin-bottom:12px;font-size:12px;color:var(--td);line-height:1.7}
+
+/* ── DEX MODAL ── */
+.modal-ov{position:fixed;inset:0;z-index:600;background:rgba(5,2,15,.92);display:none;align-items:center;justify-content:center;padding:14px}
+.modal-ov.show{display:flex}
+.dex-box{background:linear-gradient(145deg,#231540,#1A0A2E);border:2px solid rgba(255,107,157,.35);
+  border-radius:22px;width:100%;max-width:400px;max-height:88vh;overflow-y:auto;padding:22px;
+  animation:floatIn .3s ease-out;position:relative;scrollbar-width:none}
+.dex-box::-webkit-scrollbar{display:none}
+.mclose{position:absolute;top:12px;right:14px;background:rgba(255,255,255,.08);border:none;border-radius:50%;
+  width:32px;height:32px;cursor:pointer;font-size:17px;color:var(--tx);transition:all .2s;line-height:1}
+.mclose:hover{background:rgba(255,107,157,.2)}
+.dex-img{width:120px;height:120px;margin:0 auto 14px;border-radius:16px;overflow:hidden;background:rgba(255,255,255,.05);
+  display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,.1)}
+.dex-img img{width:100%;height:100%;object-fit:contain}
+.dex-emoji-fb{font-size:64px;display:flex;align-items:center;justify-content:center}
+.dnum{font-size:11px;color:var(--td);text-align:center;margin-bottom:3px}
+.dname{font-size:22px;text-align:center}
+.dtags{display:flex;gap:6px;justify-content:center;margin:8px 0;flex-wrap:wrap}
+.dtype{padding:3px 12px;border-radius:18px;font-size:12px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06)}
+/* STARS IN DEX */
+.dex-stars{display:flex;gap:4px;justify-content:center;margin:6px 0;font-size:18px}
+.dex-stars .s-filled{filter:drop-shadow(0 0 4px #FFD700)}
+.dex-stats{background:rgba(255,255,255,.04);border-radius:12px;padding:12px;margin-top:12px}
+.drow{display:flex;justify-content:space-between;padding:4px 0;font-size:12px;border-bottom:1px solid rgba(255,255,255,.05)}
+.drow:last-child{border-bottom:none}
+.dlbl{color:var(--td)}.dval{color:var(--tx)}
+.dbar-w{display:flex;align-items:center;gap:7px}
+.dbar{height:4px;background:rgba(255,255,255,.1);border-radius:2px;width:70px;overflow:hidden;display:inline-block}
+.dbar-f{height:100%;border-radius:2px}
+.ddesc{font-size:12px;color:var(--td);line-height:1.7;margin-top:12px;background:rgba(255,255,255,.03);border-radius:10px;padding:10px}
+.dlocked{text-align:center;padding:20px;color:var(--td);font-size:13px}
+/* AUCTION btn in dex */
+.auction-note{margin-top:12px;background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.25);
+  border-radius:12px;padding:10px 14px;font-size:12px;color:var(--s);text-align:center}
+
+/* ── GACHA ── */
+.gacha-wrap{display:flex;flex-direction:column;align-items:center;padding:16px 0}
+/* outer shell — the pedestal base */
+.g-machine{width:300px;position:relative;margin-bottom:22px;user-select:none}
+/* base platform */
+.m-base{width:260px;height:28px;margin:0 auto;
+  background:linear-gradient(180deg,#5a2060,#2d0f3a);
+  border-radius:0 0 20px 20px;
+  box-shadow:0 8px 20px rgba(0,0,0,.6),inset 0 2px 0 rgba(255,255,255,.08)}
+/* main body */
+.m-body{width:260px;margin:0 auto;background:linear-gradient(170deg,#7b2d8b 0%,#4a1870 40%,#2d0f52 100%);
+  border-radius:26px 26px 10px 10px;
+  border:3px solid rgba(255,255,255,.12);
+  box-shadow:0 0 0 1px rgba(0,0,0,.5),0 -2px 0 rgba(255,255,255,.05),
+    inset 2px 0 0 rgba(255,255,255,.06),inset -2px 0 0 rgba(0,0,0,.3),
+    0 12px 40px rgba(0,0,0,.7);
+  display:flex;flex-direction:column;align-items:center;padding:18px 18px 14px;position:relative;overflow:visible}
+/* metallic top rim */
+.m-body::before{content:'';position:absolute;top:0;left:0;right:0;height:18px;
+  background:linear-gradient(180deg,rgba(255,255,255,.18) 0%,rgba(255,255,255,.04) 100%);
+  border-radius:24px 24px 0 0}
+/* body side shine */
+.m-body::after{content:'';position:absolute;top:10px;left:10px;width:30px;bottom:10px;
+  background:linear-gradient(90deg,rgba(255,255,255,.08),transparent);border-radius:20px;pointer-events:none}
+/* dome top cap */
+.m-dome{width:90px;height:45px;background:linear-gradient(180deg,#e040a0,#a01060);
+  border-radius:45px 45px 0 0;margin-bottom:-2px;position:relative;
+  box-shadow:0 -4px 12px rgba(220,60,140,.6),inset 0 4px 8px rgba(255,255,255,.2)}
+.m-dome::after{content:'';position:absolute;top:8px;left:14px;width:18px;height:10px;
+  background:rgba(255,255,255,.3);border-radius:50%;transform:rotate(-20deg)}
+/* globe / viewing window */
+.m-globe-wrap{position:relative;margin-top:6px}
+.m-globe{width:148px;height:148px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.18) 0%,rgba(140,80,200,.15) 40%,rgba(10,5,30,.85) 100%);
+  border:4px solid rgba(255,255,255,.22);
+  box-shadow:0 0 0 6px rgba(100,30,120,.6),0 0 0 8px rgba(255,255,255,.06),
+    inset 0 0 40px rgba(0,0,0,.7),inset 0 0 16px rgba(200,100,255,.2),
+    0 6px 20px rgba(0,0,0,.7);
+  display:flex;align-items:center;justify-content:center;font-size:56px;
+  transition:all .3s;position:relative;overflow:hidden}
+/* globe top highlight */
+.m-globe::before{content:'';position:absolute;top:14px;left:24px;width:48px;height:26px;
+  background:radial-gradient(ellipse,rgba(255,255,255,.28) 0%,transparent 70%);
+  border-radius:50%;transform:rotate(-15deg);pointer-events:none}
+/* globe stand ring */
+.m-globe-ring{width:160px;height:16px;margin-top:-4px;
+  background:linear-gradient(180deg,#6a256e,#3d104a);
+  border-radius:0 0 8px 8px;
+  box-shadow:inset 0 -3px 6px rgba(0,0,0,.4),0 4px 8px rgba(0,0,0,.4)}
+/* coin slot panel */
+.m-panel{width:220px;background:rgba(0,0,0,.35);border-radius:14px;margin-top:12px;padding:10px 14px;
+  border:1px solid rgba(255,255,255,.08);box-shadow:inset 0 2px 6px rgba(0,0,0,.4)}
+.m-panel-row{display:flex;justify-content:space-between;align-items:center;font-size:12px}
+.m-coin-slot{width:44px;height:7px;background:#111;border-radius:4px;
+  border:1px solid rgba(255,255,255,.15);box-shadow:inset 0 1px 3px rgba(0,0,0,.8)}
+.m-lbl{color:rgba(255,255,255,.9);font-size:16px;letter-spacing:1px;text-shadow:0 0 10px rgba(255,100,200,.8),0 2px 4px rgba(0,0,0,.6)}
+.m-coins-disp{color:var(--s);font-size:12px;display:flex;align-items:center;gap:4px}
+/* capsule output tray */
+.m-tray{width:220px;height:32px;background:linear-gradient(180deg,#2a0838,#1a0525);
+  border-radius:0 0 12px 12px;margin-top:2px;
+  border:1px solid rgba(255,255,255,.07);border-top:none;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:inset 0 -3px 8px rgba(0,0,0,.5)}
+.m-tray-hole{width:60px;height:16px;background:#0a0010;border-radius:8px;
+  border:1px solid rgba(255,255,255,.1);box-shadow:inset 0 2px 4px rgba(0,0,0,.9)}
+/* lever arm */
+.m-lever-arm{position:absolute;right:-44px;top:20px;display:flex;flex-direction:column;align-items:center;cursor:pointer}
+.m-lever-top{width:34px;height:34px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#ff6,#e63000);
+  box-shadow:0 0 14px rgba(255,150,0,.7),0 3px 6px rgba(0,0,0,.5),inset 0 -2px 4px rgba(0,0,0,.3);
+  transition:transform .15s}
+.m-lever-arm:hover .m-lever-top{transform:scale(1.1);box-shadow:0 0 22px rgba(255,150,0,1)}
+.m-lever-rod{width:10px;height:90px;
+  background:linear-gradient(90deg,rgba(255,255,255,.15),rgba(255,200,0,.7) 40%,rgba(180,100,0,1) 60%,rgba(80,40,0,.8));
+  border-radius:5px;box-shadow:2px 0 6px rgba(0,0,0,.4),inset 1px 0 2px rgba(255,255,255,.2)}
+.m-lever-base{width:22px;height:14px;border-radius:4px;
+  background:linear-gradient(180deg,#888,#444);
+  box-shadow:0 2px 4px rgba(0,0,0,.5)}
+.m-lever-arm.pulled{animation:pullL .5s ease}
+@keyframes pullL{0%{transform:rotate(0)}50%{transform:rotate(28deg) translateX(4px)}100%{transform:rotate(0)}}
+/* spinning globe */
+.spinning .m-globe{animation:globeSpin .12s linear infinite}
+@keyframes globeSpin{0%{box-shadow:0 0 0 6px rgba(100,30,120,.6),0 0 0 8px rgba(255,255,255,.06),inset 0 0 40px rgba(255,100,255,.3),0 6px 20px rgba(0,0,0,.7)}
+  50%{box-shadow:0 0 0 6px rgba(255,100,200,.8),0 0 0 8px rgba(255,255,255,.15),inset 0 0 40px rgba(255,200,100,.3),0 6px 20px rgba(0,0,0,.7)}
+  100%{box-shadow:0 0 0 6px rgba(100,30,120,.6),0 0 0 8px rgba(255,255,255,.06),inset 0 0 40px rgba(100,100,255,.3),0 6px 20px rgba(0,0,0,.7)}}
+.rate-tbl{background:var(--pn);border-radius:16px;padding:14px;margin-top:4px;border:1px solid rgba(255,255,255,.07)}
+.rate-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px}
+.rate-row:last-child{border-bottom:none}
+
+/* ── EXCHANGE / AUCTION ── */
+.ex-panel{background:var(--pn);border-radius:18px;padding:18px;margin-bottom:14px;border:1px solid rgba(255,255,255,.07)}
+.ex-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.ex-row .lbl{flex:1;font-size:14px}.ex-row .cost{color:var(--s);font-size:13px}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.stat-card{background:var(--pn);border-radius:14px;padding:14px;border:1px solid rgba(255,255,255,.07);text-align:center}
+.sv{font-size:26px;color:var(--p)}.sl{font-size:11px;color:var(--td);margin-top:3px}
+
+/* ── AUCTION PANEL ── */
+.auction-item{background:var(--pn);border:1px solid rgba(255,215,0,.2);border-radius:16px;padding:14px;
+  margin-bottom:10px;display:flex;align-items:center;gap:12px;transition:all .2s}
+.auction-item:hover{border-color:rgba(255,215,0,.4);transform:translateX(2px)}
+.aucimg{width:54px;height:54px;border-radius:10px;background:var(--cb);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.aucimg img{width:100%;height:100%;object-fit:contain;border-radius:10px}
+.aucinfo{flex:1}
+.aucname{font-size:14px}.aucmeta{font-size:11px;color:var(--td);margin-top:2px}
+.aucprice{font-size:13px;color:var(--s);text-align:right;white-space:nowrap}
+.auc-stars{font-size:12px;display:flex;gap:2px;margin-top:2px}
+.empty-auc{text-align:center;padding:28px;color:var(--td);font-size:14px}
+
+/* ── SETTINGS ── */
+.cfg-box{background:linear-gradient(145deg,#231540,#1A0A2E);border:2px solid rgba(199,125,255,.3);
+  border-radius:22px;width:100%;max-width:390px;padding:22px;animation:floatIn .3s ease-out;position:relative}
+.cfg-row{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.cfg-row:last-child{border-bottom:none}
+.cfg-lbl{font-size:14px}.cfg-desc{font-size:11px;color:var(--td);margin-top:2px}
+.toggle{width:46px;height:25px;background:rgba(255,255,255,.1);border-radius:13px;position:relative;cursor:pointer;transition:background .3s;flex-shrink:0}
+.toggle.on{background:var(--a)}
+.toggle::after{content:'';position:absolute;width:19px;height:19px;background:#fff;border-radius:50%;top:3px;left:3px;transition:transform .3s;box-shadow:0 2px 6px rgba(0,0,0,.3)}
+.toggle.on::after{transform:translateX(21px)}
+.vol-sl{-webkit-appearance:none;width:110px;height:5px;border-radius:3px;background:rgba(255,255,255,.15);outline:none;cursor:pointer}
+.vol-sl::-webkit-slider-thumb{-webkit-appearance:none;width:17px;height:17px;border-radius:50%;background:var(--p);cursor:pointer}
+.ctag{background:rgba(255,255,255,.08);padding:1px 5px;border-radius:4px;font-size:11px;font-family:monospace}
+
+/* ── NOTIF & SPARKLE ── */
+.notif{position:fixed;top:78px;left:50%;transform:translateX(-50%) translateY(-80px);
+  background:linear-gradient(135deg,#2D1B4E,#1A0A2E);border:1px solid var(--a);border-radius:18px;
+  padding:10px 22px;font-size:14px;z-index:900;transition:transform .3s;white-space:nowrap;box-shadow:0 8px 30px rgba(0,0,0,.5)}
+.notif.show{transform:translateX(-50%) translateY(0)}
+@keyframes sparkle{0%{transform:scale(0) rotate(0);opacity:1}100%{transform:scale(1.5) rotate(180deg) translateY(-50px);opacity:0}}
+.sparkle{position:fixed;pointer-events:none;z-index:700;animation:sparkle .8s ease-out forwards;font-size:22px}
+/* ── META WORLD 네비바 ── */
+#mw-nav{
+  position:fixed;top:0;left:0;right:0;z-index:2000;
+  height:46px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 16px;
+  background:rgba(13,0,32,.96);
+  border-bottom:2px solid rgba(255,107,157,.2);
+  backdrop-filter:blur(14px);
+}
+.mw-back-btn{
+  display:flex;align-items:center;gap:8px;
+  font-size:12px;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(255,107,157,.75);
+  background:none;border:1px solid rgba(255,107,157,.2);
+  border-radius:20px;padding:5px 14px;
+  font-family:'Jua',cursive;cursor:pointer;
+  transition:all .25s;
+}
+.mw-back-btn:hover{
+  color:#FF6B9D;border-color:rgba(255,107,157,.5);
+  background:rgba(255,107,157,.08);
+}
+.mw-back-arrow{display:inline-block;transition:transform .2s;margin-right:2px;}
+.mw-back-btn:hover .mw-back-arrow{transform:translateX(-3px);}
+.mw-center-logo{
+  font-family:'Jua',cursive;
+  font-size:12px;letter-spacing:4px;
+  background:linear-gradient(90deg,#3b82f6,#06b6d4);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.mw-user-chip{
+  display:flex;align-items:center;gap:6px;
+  font-size:11px;letter-spacing:.5px;
+  color:rgba(255,107,157,.65);
+  background:rgba(255,107,157,.07);
+  border:1px solid rgba(255,107,157,.2);
+  border-radius:20px;padding:4px 12px;
+  font-family:'Jua',cursive;
+  max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+/* 네비바 높이 보정 */
+#loginScreen{padding-top:46px;}
+#gameScreen .topbar{top:46px;}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,107,157,.3);border-radius:2px}
+</style>
+</head>
+<body>
+<div class="stars" id="stars"></div>
+<div class="notif" id="notif">✨</div>
+
+<!-- ══ META WORLD 네비바 ══ -->
+<div id="mw-nav">
+  <button class="mw-back-btn" onclick="goToMetaWorld()">
+    <span class="mw-back-arrow">←</span>Meta World
+  </button>
+  <div class="mw-center-logo">META · WORLD</div>
+  <div class="mw-user-chip" id="mwUserChip"></div>
+</div>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">🍔</div>
+    <div class="login-title">YumMonsters!</div>
+    <div class="login-subtitle">냠냠 몬스터를 수집하세요! 🌟</div>
+    <!-- MW 자동 로그인 배너 (세션 있을 때만 표시) -->
+    <div id="mwAutoLoginBanner" style="display:none;margin-bottom:16px;padding:12px 16px;
+      background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.3);border-radius:14px;text-align:center">
+      <div style="font-size:13px;color:#60a5fa;margin-bottom:8px">🌐 Meta World 계정 감지됨</div>
+      <div id="mwAutoLoginName" style="font-size:16px;color:#fff;margin-bottom:10px"></div>
+      <button class="btn btn-p w100" onclick="loginWithMW()" style="margin-bottom:0">
+        🚀 Meta World 계정으로 바로 시작!
+      </button>
+    </div>
+    <div id="mwDivider" style="display:none;display:flex;align-items:center;gap:8px;margin:8px 0;color:rgba(255,255,255,.2);font-size:12px">
+      <div style="flex:1;height:1px;background:rgba(255,255,255,.1)"></div>또는<div style="flex:1;height:1px;background:rgba(255,255,255,.1)"></div>
+    </div>
+    <input class="login-input" id="uInput" placeholder="트레이너 이름을 입력하세요" maxlength="16" onkeydown="if(event.key==='Enter')login()">
+    <button class="btn btn-p w100" onclick="login()">🚀 게임 시작!</button>
+    <div class="login-history" id="loginHist" style="display:none"></div>
+    <div style="margin-top:14px;text-align:center">
+      <button onclick="goToMetaWorld()" style="background:none;border:none;color:rgba(255,107,157,.5);font-family:'Jua',cursive;font-size:12px;cursor:pointer;letter-spacing:1px">← Meta World 홈으로</button>
+    </div>
+  </div>
+</div>
+
+<!-- CARD REVEAL -->
+<div class="reveal-ov" id="revealOv" onclick="closeReveal()">
+  <div id="revCard"></div>
+  <div id="revInfo" class="rev-info"></div>
+  <div class="tap-hint">📲 탭하여 계속</div>
+</div>
+
+<!-- DEX MODAL -->
+<div class="modal-ov" id="dexOv" onclick="if(event.target===this)closeDex()">
+  <div class="dex-box"><button class="mclose" onclick="closeDex()">✕</button><div id="dexContent"></div></div>
+</div>
+
+<!-- SETTINGS MODAL -->
+<div class="modal-ov" id="cfgOv" onclick="if(event.target===this)closeCfg()">
+  <div class="cfg-box">
+    <button class="mclose" onclick="closeCfg()">✕</button>
+    <div class="sec" style="font-size:18px;margin-bottom:14px">⚙️ 설정</div>
+    <div class="cfg-row"><div><div class="cfg-lbl">🔊 배경음악</div><div class="cfg-desc">BGM 켜기/끄기</div></div><div class="toggle" id="tBGM" onclick="toggleCfg('bgm')"></div></div>
+    <div class="cfg-row"><div><div class="cfg-lbl">🎵 효과음</div><div class="cfg-desc">버튼·뽑기 사운드</div></div><div class="toggle" id="tSFX" onclick="toggleCfg('sfx')"></div></div>
+    <div class="cfg-row"><div><div class="cfg-lbl">🔉 볼륨</div></div><input class="vol-sl" type="range" min="0" max="100" id="volSl" oninput="setVol(this.value)"></div>
+    <div class="cfg-row"><div><div class="cfg-lbl">✨ 파티클</div><div class="cfg-desc">스파클 애니메이션</div></div><div class="toggle" id="tPart" onclick="toggleCfg('particle')"></div></div>
+    <div class="cfg-row"><div><div class="cfg-lbl">👤 트레이너</div><div class="cfg-desc" id="cfgUser"></div></div>
+      <button class="btn btn-sm" style="background:rgba(255,107,157,.15);border:1px solid rgba(255,107,157,.3);color:var(--p);font-size:12px" onclick="doLogout()">로그아웃</button></div>
+    <div class="cfg-row"><div><div class="cfg-lbl">🌐 Meta World</div><div class="cfg-desc">포털 홈으로 돌아가기</div></div>
+      <button class="btn btn-sm" style="background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.3);color:#60a5fa;font-size:12px" onclick="goToMetaWorld()">홈으로 →</button></div>
+    <div style="margin-top:16px;font-size:11px;color:var(--td);background:rgba(255,255,255,.03);border-radius:10px;padding:10px;line-height:1.8">
+      📁 <b>이미지 추가</b><br>HTML과 같은 폴더에 <span class="ctag">images/</span> 폴더를 만들고<br>도감번호로 이름 지정: <span class="ctag">images/1.png</span>, <span class="ctag">images/200.jpg</span>
+    </div>
+    <!-- IMAGE TEST TOOL -->
+    <div style="margin-top:12px;background:rgba(77,150,255,.06);border:1px solid rgba(77,150,255,.2);border-radius:10px;padding:12px">
+      <div style="font-size:12px;color:var(--b);margin-bottom:8px">🔍 이미지 경로 테스터</div>
+      <div style="display:flex;gap:6px;margin-bottom:8px">
+        <input id="imgTestInput" placeholder="도감번호 (예: 1)" style="flex:1;padding:6px 10px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:8px;color:var(--tx);font-family:'Jua',cursive;font-size:13px;outline:none">
+        <button class="btn btn-sm" style="background:rgba(77,150,255,.25);color:var(--b);border:1px solid rgba(77,150,255,.3);font-size:12px" onclick="testImage()">테스트</button>
+      </div>
+      <div id="imgTestResult" style="font-size:11px;color:var(--td);min-height:18px"></div>
+      <div style="display:flex;align-items:center;gap:8px;margin-top:6px">
+        <div id="imgTestPreview" style="width:48px;height:48px;border-radius:8px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--td)">미리보기</div>
+        <div style="font-size:10px;color:var(--td);line-height:1.6">지원 형식:<br>PNG · JPG · JPEG · WEBP · GIF</div>
+      </div>
+      <button onclick="clearImgCache()" style="margin-top:10px;width:100%;padding:7px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:var(--td);font-family:'Jua',cursive;font-size:12px;cursor:pointer">🔄 이미지 캐시 초기화 (새 이미지 추가 후 클릭)</button>
+    </div>
+  </div>
+</div>
+
+<!-- GAME SCREEN -->
+<div id="gameScreen">
+  <div class="topbar">
+    <div class="topbar-logo">🍔 YumMonsters</div>
+    <div class="topbar-r">
+      <div class="coin-badge">🪙 <span id="coinDisp">0</span></div>
+      <div class="icon-btn" onclick="goToMetaWorld()" title="Meta World 홈" style="font-size:14px;letter-spacing:.5px;padding:6px 8px;color:#60a5fa;border-color:rgba(96,165,250,.2)">🌐</div>
+      <div class="icon-btn" onclick="openCfg()">⚙️</div>
+    </div>
+  </div>
+
+  <div class="content">
+    <!-- HOME -->
+    <div class="page active" id="pageHome">
+      <div class="welcome"><h2 id="greet">안녕하세요! 🌟</h2><p id="greetDate"></p></div>
+      <div class="cal-box"><div class="sec" style="font-size:15px">📅 이번 달 출석</div><div class="cal-row" id="calRow"></div></div>
+      <div class="sec">🎁 카드팩</div>
+      <div class="pack-wrap" style="margin-bottom:20px">
+        <!-- Pack visual -->
+        <div class="pack-outer" onclick="openPack(1)">
+          <svg width="160" height="230" viewBox="0 0 160 230" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="packBg" x1="0" y1="0" x2="160" y2="230" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#FF6B9D"/><stop offset="45%" stop-color="#C77DFF"/><stop offset="100%" stop-color="#4D96FF"/>
+              </linearGradient>
+              <linearGradient id="packLeft" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="rgba(255,255,255,0.18)"/><stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+              </linearGradient>
+              <linearGradient id="packFoil" x1="0" y1="0" x2="160" y2="0" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="rgba(255,255,255,0)"/><stop offset="30%" stop-color="rgba(255,255,255,0.08)"/>
+                <stop offset="50%" stop-color="rgba(255,255,255,0.22)"/><stop offset="70%" stop-color="rgba(255,255,255,0.08)"/><stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+              </linearGradient>
+              <linearGradient id="tearTop" x1="0" y1="0" x2="160" y2="0" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#FF3D7F"/><stop offset="50%" stop-color="#FFD93D"/><stop offset="100%" stop-color="#FF3D7F"/>
+              </linearGradient>
+              <linearGradient id="packShad" x1="0" y1="0" x2="0" y2="230" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="rgba(0,0,0,0)"/><stop offset="100%" stop-color="rgba(0,0,0,0.35)"/>
+              </linearGradient>
+              <clipPath id="packClip"><rect x="2" y="2" width="156" height="226" rx="12" ry="12"/></clipPath>
+            </defs>
+            <rect x="2" y="2" width="156" height="226" rx="12" ry="12" fill="url(#packBg)"/>
+            <rect x="2" y="2" width="156" height="226" rx="12" ry="12" fill="url(#packFoil)"/>
+            <rect x="2" y="2" width="156" height="226" rx="12" ry="12" fill="url(#packShad)"/>
+            <rect x="2" y="2" width="18" height="226" rx="12" ry="12" fill="url(#packLeft)"/>
+            <rect x="1" y="1" width="158" height="228" rx="13" ry="13" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2"/>
+            <rect x="7" y="7" width="146" height="216" rx="9" ry="9" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <circle cx="8" cy="38" r="7" fill="rgba(0,0,0,0.5)"/>
+            <circle cx="152" cy="38" r="7" fill="rgba(0,0,0,0.5)"/>
+            <line x1="15" y1="38" x2="145" y2="38" stroke="url(#tearTop)" stroke-width="2" stroke-dasharray="6 3"/>
+            <rect x="2" y="2" width="156" height="36" rx="12" ry="12" fill="rgba(0,0,0,0.25)" clip-path="url(#packClip)"/>
+            <text x="80" y="25" text-anchor="middle" font-family="Jua,sans-serif" font-size="13" fill="rgba(255,255,255,0.9)" letter-spacing="2">YumMonsters</text>
+            <rect x="22" y="52" width="116" height="116" rx="12" fill="rgba(0,0,0,0.22)" stroke="rgba(255,255,255,0.18)" stroke-width="1.5"/>
+            <circle cx="80" cy="110" r="38" fill="rgba(255,255,255,0.07)"/>
+            <circle cx="80" cy="110" r="28" fill="rgba(255,255,255,0.06)"/>
+            <text x="80" y="122" text-anchor="middle" font-size="40">🎴</text>
+            <rect x="2" y="178" width="156" height="50" rx="0" fill="rgba(0,0,0,0.3)" clip-path="url(#packClip)"/>
+            <text x="80" y="196" text-anchor="middle" font-family="Jua,sans-serif" font-size="11" fill="rgba(255,255,255,0.55)">CARD PACK</text>
+            <text x="80" y="216" text-anchor="middle" font-family="Jua,sans-serif" font-size="16" fill="#FFD93D">5 CARDS</text>
+            <g opacity="0.12" clip-path="url(#packClip)">
+              <circle cx="30" cy="60" r="2" fill="white"/><circle cx="50" cy="55" r="1.5" fill="white"/>
+              <circle cx="110" cy="58" r="2" fill="white"/><circle cx="130" cy="63" r="1.5" fill="white"/>
+            </g>
+            <text x="16" y="30" font-size="10" opacity="0.8">✦</text>
+            <text x="136" y="30" font-size="10" opacity="0.8">✦</text>
+          </svg>
+        </div>
+
+        <!-- Pack count badge -->
+        <div class="pack-cnt">보유 팩: <span id="packCnt">0</span>개</div>
+
+        <!-- Open buttons: 1장 / 10장 / 100장 -->
+        <div style="display:flex;flex-direction:column;gap:10px;width:240px;margin:0 auto">
+          <button class="btn btn-p" onclick="openPack(1)" style="width:100%;font-size:15px;padding:12px">
+            🎴 1장 오픈
+          </button>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-s" onclick="openPack(10)" style="flex:1;font-size:13px;padding:10px">
+              🎴 10장 오픈
+            </button>
+            <button class="btn btn-pu" onclick="openPack(100)" style="flex:1;font-size:13px;padding:10px">
+              🎴 100장 오픈
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="sec">⚔️ 오늘의 퀘스트</div>
+      <div id="questList"></div>
+    </div>
+
+    <!-- BINDER -->
+    <div class="page" id="pageBinder">
+      <div class="sec">📚 카드 보관함</div>
+      <div class="coll-prog">
+        <div class="prow"><span>📊 수집 진행도</span><span id="collCnt">0 / 0</span></div>
+        <div class="pbarw"><div class="pfillw" id="collBar" style="width:0%"></div></div>
+      </div>
+      <div class="star-info">
+        ⭐ <b>별 강화 시스템</b><br>
+        같은 카드가 중복으로 나오면 별이 1→2→3→4→5단계로 올라가요!<br>
+        ⭐️⭐️⭐️⭐️⭐️ 만땅 후 추가 중복 → <b>경매소</b>에서 판매 가능!
+      </div>
+      <div class="binder-tabs" id="binderTabs"></div>
+      <div class="card-grid" id="cardGrid"></div>
+    </div>
+
+    <!-- GACHA -->
+    <div class="page" id="pageGacha">
+      <div class="sec">🎰 가챠 머신</div>
+      <div class="gacha-wrap">
+        <div class="g-machine">
+          <!-- dome cap -->
+          <div style="display:flex;justify-content:center"><div class="m-dome"></div></div>
+          <!-- main body -->
+          <div class="m-body" id="mBody">
+            <!-- globe window -->
+            <div class="m-globe-wrap">
+              <div class="m-globe" id="mWin">🎰</div>
+            </div>
+            <div class="m-globe-ring"></div>
+            <!-- info panel -->
+            <div class="m-panel">
+              <div class="m-panel-row">
+                <div class="m-lbl">YumMon!</div>
+                <div class="m-coins-disp">🪙 <span id="gCoinDisp">0</span></div>
+              </div>
+              <div style="display:flex;justify-content:center;margin-top:8px">
+                <div class="m-coin-slot"></div>
+              </div>
+            </div>
+            <!-- capsule tray -->
+            <div class="m-tray"><div class="m-tray-hole"></div></div>
+            <!-- lever -->
+            <div class="m-lever-arm" id="mLever" onclick="doGacha(1)">
+              <div class="m-lever-top"></div>
+              <div class="m-lever-rod"></div>
+              <div class="m-lever-base"></div>
+            </div>
+          </div>
+          <!-- base -->
+          <div class="m-base"></div>
+        </div>
+        <div style="font-size:13px;color:var(--td);margin-bottom:12px">🪙 100코인 / 1회 · 중복 시 ⭐ 강화!</div>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-s" onclick="doGacha(1)">🎰 1회<br><small>100코인</small></button>
+          <button class="btn btn-pu" onclick="doGacha(10)">🎰 10회<br><small>900코인</small></button>
+        </div>
+        <div style="margin-top:20px;width:100%">
+          <div class="sec" style="font-size:15px">📊 확률표</div>
+          <div class="rate-tbl">
+            <div class="rate-row"><span><span class="rtag tN">N</span> 노말</span><span style="color:#888">55%</span></div>
+            <div class="rate-row"><span><span class="rtag tR">R</span> 레어</span><span style="color:#4D96FF">28%</span></div>
+            <div class="rate-row"><span><span class="rtag tSR">SR</span> 슈퍼레어</span><span style="color:#C77DFF">13%</span></div>
+            <div class="rate-row"><span><span class="rtag tSSR">SSR</span> 슈퍼슈퍼레어</span><span style="color:#FFD700">3.2%</span></div>
+            <div class="rate-row"><span><span class="rtag tUR">UR</span> 울트라레어</span><span style="color:#FF6B9D">0.8%</span></div>
+          </div>
+          <div style="margin-top:10px;font-size:11px;color:var(--td);background:rgba(255,255,255,.03);border-radius:10px;padding:9px">
+            ✨ 중복 뽑기 시 별 강화 (최대 ⭐⭐⭐⭐⭐)<br>
+            🌟 별 5단계 이후 중복 → 경매소에서 판매 가능
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXCHANGE / AUCTION -->
+    <div class="page" id="pageExchange">
+      <div class="sec">🔄 교환소</div>
+      <div class="ex-panel">
+        <div class="sec" style="font-size:15px;margin-bottom:10px">🪙 코인 → 카드팩</div>
+        <div class="ex-row"><div class="lbl">🎴 카드팩 1개</div><div class="cost">🪙 300코인</div><button class="btn btn-y btn-xs" onclick="buyPack(1)">구매</button></div>
+        <div class="ex-row"><div class="lbl">🎴 카드팩 5개</div><div class="cost">🪙 1,400코인</div><button class="btn btn-y btn-xs" onclick="buyPack(5)">구매</button></div>
+      </div>
+
+      <div class="ex-panel">
+        <div class="sec" style="font-size:15px;margin-bottom:4px">🏛️ 경매소</div>
+        <p style="font-size:12px;color:var(--td);margin-bottom:12px">⭐×5 카드를 판매하고 코인을 획득하세요!</p>
+        <div id="auctionList"></div>
+      </div>
+
+      <div class="ex-panel">
+        <div class="sec" style="font-size:15px;margin-bottom:10px">📊 내 통계</div>
+        <div class="stat-grid">
+          <div class="stat-card"><div class="sv" id="stCards">0</div><div class="sl">수집 종류</div></div>
+          <div class="stat-card"><div class="sv" id="stTotal">0</div><div class="sl">총 보유 카드</div></div>
+          <div class="stat-card"><div class="sv" id="stGacha">0</div><div class="sl">가챠 횟수</div></div>
+          <div class="stat-card"><div class="sv" id="stDays">0</div><div class="sl">출석 일수</div></div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /content -->
+
+  <div class="nav">
+    <button class="nav-btn active" onclick="switchPage('Home',this)"><span>🏠</span><span>홈</span></button>
+    <button class="nav-btn" onclick="switchPage('Binder',this)"><span>📚</span><span>보관함</span></button>
+    <button class="nav-btn" onclick="switchPage('Gacha',this)"><span>🎰</span><span>가챠</span></button>
+    <button class="nav-btn" onclick="switchPage('Exchange',this)"><span>🔄</span><span>교환소</span></button>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════
+// CONSTANTS
+// ═══════════════════════════════════════════════════
+const CATS=[
+  {id:'fire',  name:'🔥 불꽃',  color:'#FF6B2B', cnt:190},
+  {id:'water', name:'💧 물',    color:'#4D96FF', cnt:185},
+  {id:'grass', name:'🌿 풀',    color:'#6BCB77', cnt:192},
+  {id:'elec',  name:'⚡ 전기',  color:'#FFD93D', cnt:183},
+  {id:'ice',   name:'❄️ 얼음',  color:'#A8DADC', cnt:188},
+  {id:'fight', name:'🥊 격투',  color:'#FF6B9D', cnt:195},
+  {id:'fly',   name:'🌈 비행',  color:'#C77DFF', cnt:180},
+  {id:'dark',  name:'🌑 어둠',  color:'#6C5CE7', cnt:186},
+  {id:'steel', name:'⚙️ 강철',  color:'#B2BEC3', cnt:182},
+  {id:'dragon',name:'🐉 드래곤',color:'#9B59B6', cnt:197},
+  {id:'sweet', name:'🍭 달콤',  color:'#FF85A1', cnt:191},
+  {id:'spicy', name:'🌶️ 매운',  color:'#E84393', cnt:184},
+  {id:'bread', name:'🍞 빵',    color:'#E8B86D', cnt:198},
+  {id:'noodle',name:'🍜 면',    color:'#FFB347', cnt:187},
+  {id:'meat',  name:'🥩 고기',  color:'#C0392B', cnt:193},
+  {id:'veggie',name:'🥦 채소',  color:'#27AE60', cnt:196},
+  {id:'sea',   name:'🐟 바다',  color:'#0099CC', cnt:189},
+  {id:'sky',   name:'☁️ 하늘',  color:'#74B9FF', cnt:181},
+  {id:'forest',name:'🌲 숲',    color:'#2ECC71', cnt:194},
+  {id:'cosmic',name:'✨ 우주',  color:'#A29BFE', cnt:200},
+];
+// Total unique monsters
+const TOTAL_MONS = CATS.reduce((s,c)=>s+c.cnt,0); // ~3,780
+
+// DEX number: cumulative offset + local index + 1
+const CAT_OFFSET = (() => {
+  let off=0, res={};
+  CATS.forEach(c=>{ res[c.id]=off; off+=c.cnt; });
+  return res;
+})();
+
+const ANIMALS='🐱🐶🐭🐹🐰🦊🐻🐼🐨🐯🦁🐮🐷🐸🐵🐔🐧🐦🦆🦉🦇🐺🐗🐴🦄🐝🦋🐌🐞🐜🐢🐍🦎🦖🦕🐙🦑🦐🦀🐡🐠🐟🐬🐳🦈🐊🐅🐆🦓🦍🦣🐘🦛🦏🐪🦒🦘🦬🐃🐄🐎🐖🐏🐑🦙🐐🦌🐕🐈🐓🦃🦤🦚🦜🦢'.split('');
+const FOODS='🍎🍊🍋🍇🍓🍑🍒🍌🥝🍕🍔🌮🌯🥗🍜🍣🍱🥪🧆🥚🍳🧇🥞🥓🥩🍗🍖🌭🍟🧀🥐🥖🍞🥨🥯🧁🎂🍰🍩🍪🍫🍬🍭🍡🍧🍨🍦🥧☕🍵🧋🥤🧃🍮'.split('');
+const MPRE='냠냠 쏙쏙 달달 쫄쫄 뭉실 보들 통통 찰찰 쫀쫀 바삭 폭신 쫄깃 달콤 매콤 짭짤 몽글 통실 쪼꼬 보실 뭉게'.split(' ');
+const MSUF='몬 냥 냠 쫄 뭉 달 통 왕 짱 뽀 꾼 이 링 쿵 뽁'.split(' ');
+const DESCS=[
+  '항상 배가 고파 보이지만 실은 든든한 몬스터다.',
+  '작은 몸에서 엄청난 에너지가 뿜어져 나온다.',
+  '달콤한 향기로 친구들을 모으는 걸 좋아한다.',
+  '빠르게 달리지만 낮잠도 즐긴다.',
+  '밤이 되면 더욱 강해지는 신비로운 능력이 있다.',
+  '음식 냄새를 3km 밖에서 맡는다는 소문이 있다.',
+  '요리를 좋아하며 맛있는 음식을 나눠준다.',
+  '춤을 추면 하늘에서 맛있는 것이 떨어진다는 전설이 있다.',
+  '밝은 미소로 주변을 행복하게 만드는 몬스터다.',
+  '비 오는 날 더욱 활발해지며 노래를 부른다.',
+  '작은 꼬리가 날씨를 예측할 수 있다고 알려져 있다.',
+  '이상한 춤을 추면 적들이 배꼽을 잡고 웃는다.',
+];
+const RNAME={N:'노말',R:'레어',SR:'슈퍼레어',SSR:'슈퍼슈퍼레어',UR:'울트라레어'};
+const RCOL={N:'#888',R:'#4D96FF',SR:'#C77DFF',SSR:'#FFD700',UR:'#FF6B9D'};
+const RGRAD={N:'linear-gradient(135deg,#3a3a4a,#555)',R:'linear-gradient(135deg,#1a4d8f,#4D96FF)',
+  SR:'linear-gradient(135deg,#5a2d91,#C77DFF)',SSR:'linear-gradient(135deg,#8B6914,#FFD700,#8B6914)',
+  UR:'linear-gradient(135deg,#FF0080,#FFD700,#00FFFF,#FF0080)'};
+// Gacha rarity weights (cumulative %)
+// N=55, R=28, SR=13, SSR=3.2, UR=0.8  → sum=100
+const RARITY_POOL=[];
+(()=>{
+  const rs=[['N',55],['R',28],['SR',13],['SSR',3.2],['UR',0.8]];
+  rs.forEach(([r,w])=>{ for(let i=0;i<Math.round(w*10);i++) RARITY_POOL.push(r); });
+})();
+
+// Auction sale prices by rarity (per star level)
+const AUC_PRICE={N:30,R:80,SR:200,SSR:600,UR:2000};
+
+// ═══════════════════════════════════════════════════
+// CARD DATA
+// ═══════════════════════════════════════════════════
+function getCardData(catId, idx){
+  const ci=CATS.findIndex(c=>c.id===catId);
+  const dexNum=CAT_OFFSET[catId]+idx+1;
+  const em=ANIMALS[(idx*7+ci*3)%ANIMALS.length]+FOODS[(idx*13+ci*5)%FOODS.length];
+  // deterministic rarity from dex
+  const rpool=['N','N','N','N','N','N','R','R','R','R','SR','SR','SR','SSR','UR'];
+  const rarity=rpool[(idx*3+ci*7)%rpool.length];
+  const mult={N:1,R:1.4,SR:1.9,SSR:2.6,UR:4}[rarity];
+  const name=MPRE[(idx+ci)%MPRE.length]+MSUF[(idx*2+ci)%MSUF.length];
+  return{
+    id:`${catId}_${idx}`,catId,catIdx:ci,idx,dexNum,em,name,rarity,
+    desc:DESCS[(idx+ci)%DESCS.length],
+    hp: Math.round((30+((idx*17+ci*5)%141))*mult),
+    atk:Math.round((10+((idx*11+ci*7)%81))*mult),
+    def:Math.round((5+((idx*9+ci*3)%76))*mult),
+    spd:Math.round((5+((idx*13+ci*11)%76))*mult),
+    height:(((dexNum%18)+1)*0.1+0.2).toFixed(1),
+    weight:(((dexNum*7)%700)/10+0.5).toFixed(1),
+  };
+}
+// Returns all cards for a category
+function getCatCards(catId){
+  const cat=CATS.find(c=>c.id===catId);
+  return Array.from({length:cat.cnt},(_,i)=>getCardData(catId,i));
+}
+
+// ─── IMAGE LOADER ───────────────────────────────────
+// Tries: svg → png → jpg → jpeg → webp → gif → emoji fallback
+// img starts hidden; successful onload makes it visible.
+// ────────────────────────────────────────────────────
+let _imgCtr = 0;
+
+window._imgNext = function(el, fbId, dexNum, idx){
+  const exts = ['svg','png','jpg','jpeg','webp','gif'];
+  if(idx >= exts.length){
+    el.style.display = 'none';
+    var fb = document.getElementById(fbId);
+    if(fb){ fb.style.display = 'flex'; }
+    return;
+  }
+  el.onerror = function(){ window._imgNext(el, fbId, dexNum, idx+1); };
+  el.onload  = function(){ el.style.display='block'; var fb=document.getElementById(fbId); if(fb)fb.style.display='none'; };
+  el.src = 'images/' + dexNum + '.' + exts[idx];
+};
+
+function imgHTML(dexNum, size, em){
+  const uid = 'i'+(++_imgCtr);
+  const fid = 'f'+uid;
+  const sz = 'width:'+size+'px;height:'+size+'px';
+  // Start src with first ext; display:none until onload fires
+  return '<img id="'+uid+'" src="images/'+dexNum+'.svg"'+
+    ' style="'+sz+';object-fit:contain;border-radius:5px;display:none"'+
+    ' onload="this.style.display=\'block\';var _f=document.getElementById(\''+fid+'\');if(_f)_f.style.display=\'none\';"'+
+    ' onerror="_imgNext(this,\''+fid+'\','+dexNum+',1)"'+
+    ' alt="">' +
+    '<div id="'+fid+'" style="display:flex;font-size:'+Math.round(size*.65)+'px;'+sz+
+    ';align-items:center;justify-content:center;flex-shrink:0;line-height:1">'+em+'</div>';
+}
+
+function dexImgHTML(dexNum, em){
+  const uid = 'd'+(++_imgCtr);
+  const fid = 'f'+uid;
+  return '<img id="'+uid+'" src="images/'+dexNum+'.svg"'+
+    ' style="width:100%;height:100%;object-fit:contain;display:none"'+
+    ' onload="this.style.display=\'block\';var _f=document.getElementById(\''+fid+'\');if(_f)_f.style.display=\'none\';"'+
+    ' onerror="_imgNext(this,\''+fid+'\','+dexNum+',1)"'+
+    ' alt="">' +
+    '<div id="'+fid+'" style="display:flex;font-size:60px;width:100%;height:100%;'+
+    'align-items:center;justify-content:center;line-height:1">'+em+'</div>';
+}
+
+function preloadCatImages(){ /* on-demand */ }
+
+function testImage(){
+  const val=document.getElementById('imgTestInput').value.trim();
+  const num=parseInt(val);
+  const res=document.getElementById('imgTestResult');
+  const prev=document.getElementById('imgTestPreview');
+  if(!num){res.textContent='⚠️ 숫자를 입력해주세요';res.style.color='#FF6B9D';return;}
+  res.textContent='🔍 확인 중...';res.style.color='var(--td)';prev.innerHTML='';
+  const exts=['svg','png','jpg','jpeg','webp','gif'];
+  let found=false,tried=0;
+  exts.forEach(ext=>{
+    const img=new Image();
+    img.onload=()=>{if(found)return;found=true;res.textContent='✅ images/'+num+'.'+ext+' ('+img.naturalWidth+'×'+img.naturalHeight+'px)';res.style.color='#6BCB77';prev.innerHTML='<img src="images/'+num+'.'+ext+'" style="width:48px;height:48px;object-fit:contain;border-radius:6px">';};
+    img.onerror=()=>{tried++;if(tried===exts.length&&!found){res.textContent='❌ images/'+num+'.[확장자] 없음';res.style.color='#FF6B9D';prev.innerHTML='<span style="font-size:10px">없음</span>';}};
+    img.src='images/'+num+'.'+ext+'?t='+Date.now();
+  });
+}
+function clearImgCache(){renderBinder();notif('🔄 이미지 새로고침!');}
+
+// ═══════════════════════════════════════════════════
+// STAR UTILS
+// ═══════════════════════════════════════════════════
+const MAX_STARS=5;
+function starsHTML(n, size=10){
+  // n = 1..5
+  let h='';
+  for(let i=1;i<=MAX_STARS;i++)
+    h+=`<span style="font-size:${size}px;${i<=n?'filter:drop-shadow(0 0 3px #FFD700)':'opacity:.25'}">${i<=n?'⭐':'☆'}</span>`;
+  return h;
+}
+
+// ═══════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════
+// state.cards[cardId] = { stars: 1..5, overflow: 0..N }
+// overflow = count of duplicates AFTER reaching 5 stars (available for auction)
+let ST={username:'',coins:500,packs:3,cards:{},questProgress:{},questCompleted:{},
+  lastLogin:'',loginDays:[],gachaCount:0,currentCat:0,auction:[]};
+let CFG={bgm:false,sfx:true,particle:true,volume:60};
+
+// ═══════════════════════════════════════════════════
+// QUESTS
+// ═══════════════════════════════════════════════════
+const QUESTS=[
+  {id:'q1',icon:'🎴',name:'카드팩 오픈',desc:'카드팩을 1번 오픈하세요',max:1,reward:'50코인',type:'pack'},
+  {id:'q2',icon:'🎰',name:'가챠 도전',desc:'가챠를 3번 돌리세요',max:3,reward:'50코인+카드팩',type:'gacha'},
+  {id:'q3',icon:'📚',name:'보관함 탐험',desc:'보관함 카테고리를 5번 탐색하세요',max:5,reward:'50코인',type:'binder'},
+  {id:'q4',icon:'🌟',name:'컬렉터',desc:'카드를 10장 수집하세요',max:10,reward:'카드팩 1개',type:'collect'},
+  {id:'q5',icon:'⭐',name:'별 강화',desc:'별 2단계 이상 카드를 1개 만드세요',max:1,reward:'카드팩 2개',type:'star2'},
+];
+
+// ═══════════════════════════════════════════════════
+// AUDIO
+// ═══════════════════════════════════════════════════
+let aCtx=null,bgmT=null;
+function getACtx(){ if(!aCtx)aCtx=new(window.AudioContext||window.webkitAudioContext)(); return aCtx; }
+function tone(f,type,dur,vol){ if(!CFG.sfx)return; try{
+  const c=getACtx(),o=c.createOscillator(),g=c.createGain();
+  o.connect(g);g.connect(c.destination);o.type=type;o.frequency.value=f;
+  g.gain.setValueAtTime(vol*(CFG.volume/100),c.currentTime);
+  g.gain.exponentialRampToValueAtTime(.001,c.currentTime+dur);
+  o.start();o.stop(c.currentTime+dur); }catch(e){} }
+const sfxClick=()=>tone(440,'sine',.08,.15);
+const sfxOpen=()=>[523,659,784].forEach((f,i)=>setTimeout(()=>tone(f,'triangle',.2,.2),i*80));
+const sfxGacha=()=>[261,329,392,523].forEach((f,i)=>setTimeout(()=>tone(f,'square',.15,.15),i*60));
+const sfxRare=()=>[659,784,1047,1319].forEach((f,i)=>setTimeout(()=>tone(f,'triangle',.3,.25),i*100));
+const sfxSSR=()=>[523,659,784,1047,1319,1568].forEach((f,i)=>setTimeout(()=>tone(f,'sine',.4,.3),i*80));
+const sfxStar=()=>[880,1046,1318].forEach((f,i)=>setTimeout(()=>tone(f,'sine',.2,.2),i*100));
+function startBGM(){
+  if(!CFG.bgm||bgmT)return;
+  try{
+    const c=getACtx(),ns=[261,293,329,349,392,440,493,523];let s=0;
+    function nx(){ if(!CFG.bgm){bgmT=null;return;}
+      const o=c.createOscillator(),g=c.createGain();
+      o.connect(g);g.connect(c.destination);o.type='triangle';o.frequency.value=ns[s%ns.length];
+      g.gain.setValueAtTime(.04*(CFG.volume/100),c.currentTime);
+      g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.35);
+      o.start();o.stop(c.currentTime+.35);s++;bgmT=setTimeout(nx,400); }
+    bgmT=setTimeout(nx,0); }catch(e){} }
+function stopBGM(){clearTimeout(bgmT);bgmT=null;}
+
+// ═══════════════════════════════════════════════════
+// STORAGE
+// ═══════════════════════════════════════════════════
+function save(){ localStorage.setItem('ym_'+ST.username,JSON.stringify(ST)); localStorage.setItem('ym_last',ST.username); }
+function saveCFG(){ localStorage.setItem('ym_cfg',JSON.stringify(CFG)); }
+function loadCFG(){ const d=localStorage.getItem('ym_cfg'); if(d)CFG=JSON.parse(d); }
+function loadST(u){ const d=localStorage.getItem('ym_'+u); if(d){ST=JSON.parse(d);return true;} return false; }
+
+// ═══════════════════════════════════════════════════
+// LOGIN
+// ═══════════════════════════════════════════════════
+function login(){
+  const n=document.getElementById('uInput').value.trim();
+  if(!n){notif('⚠️ 이름을 입력해주세요!');return;}
+  ST.username=n;
+  if(!loadST(n)) ST={username:n,coins:500,packs:3,cards:{},questProgress:{},questCompleted:{},lastLogin:'',loginDays:[],gachaCount:0,currentCat:0,auction:[]};
+  if(!ST.auction)ST.auction=[];
+  // Show game screen FIRST so DOM elements exist
+  document.getElementById('loginScreen').style.display='none';
+  document.getElementById('gameScreen').style.display='block';
+  loadCFG();applySettings();
+  checkDaily(); // now calRow exists in DOM
+  initGame();
+  if(CFG.bgm)startBGM();
+}
+function checkDaily(){
+  // Use YYYY-M-D key (same as calendar render) for consistency
+  const now = new Date();
+  const todayKey = now.getFullYear()+'-'+(now.getMonth()+1)+'-'+now.getDate();
+  if(!ST.loginDays) ST.loginDays = [];
+  if(!ST.loginDays.includes(todayKey)){
+    ST.loginDays.push(todayKey);
+    ST.lastLogin = todayKey;
+    ST.packs += 1;
+    ST.coins += 100;
+    save();
+    renderCal();
+    updateCoins();
+    updatePacks();
+    setTimeout(()=>notif('🎉 출석 보너스! 카드팩 +1, 코인 +100'), 500);
+  } else {
+    ST.lastLogin = todayKey;
+  }
+}
+function showLoginHist(){
+  const ks=Object.keys(localStorage).filter(k=>k.startsWith('ym_')&&k!=='ym_last'&&k!=='ym_cfg');
+  if(!ks.length)return;
+  const b=document.getElementById('loginHist');b.style.display='block';
+  b.innerHTML='<div style="margin-bottom:5px;color:var(--td)">최근 플레이어</div>';
+  ks.slice(0,4).forEach(k=>{
+    const u=k.replace('ym_','');
+    b.innerHTML+=`<span onclick="quickLogin('${u}')" style="display:inline-block;margin:3px;padding:4px 10px;background:rgba(255,107,157,.1);border:1px solid rgba(255,107,157,.2);border-radius:9px;cursor:pointer;font-size:12px">${u}</span>`;
+  });
+}
+function quickLogin(n){document.getElementById('uInput').value=n;login();}
+
+// ═══════════════════════════════════════════════════
+// INIT / UI UPDATES
+// ═══════════════════════════════════════════════════
+function initGame(){
+  updateCoins();updatePacks();renderCal();renderQuests();renderBinder();updateStats();renderAuction();
+  const days=['일','월','화','수','목','금','토'],now=new Date();
+  document.getElementById('greet').textContent=`안녕하세요, ${ST.username} 트레이너! 🌟`;
+  document.getElementById('greetDate').textContent=`${now.getFullYear()}년 ${now.getMonth()+1}월 ${now.getDate()}일 (${days[now.getDay()]})`;
+}
+function updateCoins(){
+  const v=ST.coins.toLocaleString();
+  document.getElementById('coinDisp').textContent=v;
+  document.getElementById('gCoinDisp').textContent=v;
+}
+function updatePacks(){document.getElementById('packCnt').textContent=ST.packs;}
+
+// ═══════════════════════════════════════════════════
+// CALENDAR
+// ═══════════════════════════════════════════════════
+function renderCal(){
+  const now=new Date(),dm=new Date(now.getFullYear(),now.getMonth()+1,0).getDate(),td=now.getDate();
+  document.getElementById('calRow').innerHTML=Array.from({length:Math.min(dm,14)},(_,i)=>{
+    const d=i+1,k=`${now.getFullYear()}-${now.getMonth()+1}-${d}`;
+    const done=ST.loginDays&&ST.loginDays.includes(k),it=d===td;
+    return `<div class="cal-day ${done?'done':''} ${it?'today':''}">${done?'✓':d}</div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════════
+// QUESTS
+// ═══════════════════════════════════════════════════
+function renderQuests(){
+  if(!ST.questProgress)ST.questProgress={};if(!ST.questCompleted)ST.questCompleted={};
+  const cl=['#FF6B9D','#4D96FF','#FFD93D','#6BCB77','#C77DFF'];
+  document.getElementById('questList').innerHTML=QUESTS.map((q,qi)=>{
+    const pr=ST.questProgress[q.id]||0,done=ST.questCompleted[q.id],pct=Math.min((pr/q.max)*100,100);
+    return `<div class="quest-card" style="${done?'opacity:.5':''}">
+      <div class="q-icon">${q.icon}</div>
+      <div class="q-info"><h3>${q.name} ${done?'✅':''}</h3><p>${q.desc}</p>
+        <div class="q-prog">${pr}/${q.max}</div>
+        <div class="pbar"><div class="pfill" style="width:${pct}%;background:${cl[qi%5]}"></div></div>
+      </div>
+      <div class="q-reward">🎁 ${q.reward}
+        ${!done&&pr>=q.max?`<br><button class="btn btn-g btn-sm" style="margin-top:5px" onclick="claimQ('${q.id}')">수령!</button>`:''}
+      </div></div>`;
+  }).join('');
+}
+function claimQ(qid){
+  if(ST.questCompleted[qid])return;
+  const q=QUESTS.find(q=>q.id===qid);if(!q)return;
+  ST.questCompleted[qid]=true;const r=q.reward;
+  if(r.includes('팩')){const n=parseInt(r)||1;ST.packs+=n;updatePacks();notif(`🎁 ${q.name} 완료! 카드팩 +${n}`);}
+  if(r.includes('코인')){ST.coins+=50;updateCoins();notif(`🎁 ${q.name} 완료! 코인 +50`);}
+  save();renderQuests();spark();sfxOpen();
+}
+function addQP(type,amt=1){
+  if(!ST.questProgress)ST.questProgress={};
+  QUESTS.forEach(q=>{ if(q.type===type&&!ST.questCompleted[q.id]) ST.questProgress[q.id]=Math.min((ST.questProgress[q.id]||0)+amt,q.max); });
+  renderQuests();
+}
+
+// ═══════════════════════════════════════════════════
+// CARD PACK OPEN  (count = 1 / 10 / 100)
+// ═══════════════════════════════════════════════════
+function openPack(count){
+  count = count || 1;
+  if(ST.packs < count){
+    notif(`⚠️ 카드팩이 ${count}개 필요해요! (현재: ${ST.packs}개)`);
+    return;
+  }
+  sfxOpen();
+  ST.packs -= count;
+  updatePacks();
+
+  // Roll all cards
+  const results = [];
+  for(let i = 0; i < count; i++){
+    const card = rollCard();
+    const res  = addCard(card);
+    results.push({card, res});
+    addQP('collect', 1);
+  }
+  addQP('pack', 1);
+  save();
+
+  if(count === 1){
+    showReveal(results[0].card, results[0].res);
+  } else {
+    // Show best result, then summary
+    const best = results.reduce((a,b)=>{
+      const o={N:1,R:2,SR:3,SSR:4,UR:5};
+      return o[b.card.rarity] >= o[a.card.rarity] ? b : a;
+    });
+    showMultiReveal(results, best, count);
+  }
+}
+
+// ═══════════════════════════════════════════════════
+// ROLL CARD (weighted random rarity, then random from that rarity pool)
+// ═══════════════════════════════════════════════════
+function rollCard(){
+  // Pick rarity
+  const r=RARITY_POOL[Math.floor(Math.random()*RARITY_POOL.length)];
+  // Pick random cat weighted by size
+  const cat=CATS[Math.floor(Math.random()*CATS.length)];
+  // Pick random index from that category
+  const idx=Math.floor(Math.random()*cat.cnt);
+  // Get the actual card, but override rarity with rolled rarity
+  const base=getCardData(cat.id,idx);
+  base.rarity=r; // override with random rarity
+  return base;
+}
+
+// ═══════════════════════════════════════════════════
+// ADD CARD (star system)
+// Returns: { isNew, stars, wasOverflow }
+// ═══════════════════════════════════════════════════
+function addCard(card){
+  if(!ST.cards)ST.cards={};
+  const id=card.id;
+  if(!ST.cards[id]){
+    ST.cards[id]={stars:1,overflow:0};
+    return {isNew:true,stars:1,wasOverflow:false};
+  }
+  const c=ST.cards[id];
+  if(c.stars<MAX_STARS){
+    c.stars++;
+    // Quest: star2
+    if(c.stars>=2) addQP('star2',1);
+    sfxStar();
+    return {isNew:false,stars:c.stars,wasOverflow:false};
+  } else {
+    // Already 5 stars — goes to overflow (auction pool)
+    c.overflow=(c.overflow||0)+1;
+    return {isNew:false,stars:MAX_STARS,wasOverflow:true};
+  }
+}
+
+// ═══════════════════════════════════════════════════
+// CARD REVEAL
+// ═══════════════════════════════════════════════════
+function showReveal(card,result){
+  if(card.rarity==='UR'||card.rarity==='SSR')sfxSSR(); else if(card.rarity==='SR')sfxRare();
+  const cat=CATS.find(c=>c.id===card.catId)||CATS[0];
+  let badge='';
+  if(result.wasOverflow) badge=`<div style="margin-top:5px;font-size:12px;color:var(--s)">📦 경매 가능!</div>`;
+  else if(!result.isNew) badge=`<div style="margin-top:5px;font-size:12px;color:var(--s)">${starsHTML(result.stars,12)}</div>`;
+  document.getElementById('revCard').innerHTML=`
+    <div class="rev-card" style="background:${RGRAD[card.rarity]}">
+      <div style="width:90px;height:90px;display:flex;align-items:center;justify-content:center">${imgHTML(card.dexNum,80,card.em)}</div>
+      <div class="rev-name">#${String(card.dexNum).padStart(4,'0')} ${card.name}</div>
+      <div style="margin-top:4px"><span class="rtag t${card.rarity}">${card.rarity}</span></div>
+      ${badge}
+    </div>`;
+  document.getElementById('revInfo').innerHTML=`
+    <h3 style="font-size:18px;margin-top:10px">${card.name}</h3>
+    <p style="color:var(--td);margin-top:2px;font-size:13px">${cat.name} · ${RNAME[card.rarity]}</p>
+    ${result.isNew?'<p style="color:var(--a);font-size:12px;margin-top:3px">✨ 새 몬스터 발견!</p>':''}
+    ${result.wasOverflow?'<p style="color:var(--s);font-size:12px;margin-top:3px">⭐×5 만땅! 교환소에서 판매 가능</p>':''}`;
+  document.getElementById('revealOv').classList.add('show');
+  if(['SSR','UR'].includes(card.rarity)) spark(20);
+  else spark(5);
+}
+function closeReveal(){
+  document.getElementById('revealOv').classList.remove('show');
+  sfxClick();renderBinder();updateStats();
+}
+
+// ── MULTI PACK REVEAL (10장 / 100장) ──────────────
+function showMultiReveal(results, best, count){
+  if(['SSR','UR'].includes(best.card.rarity)) sfxSSR();
+  else if(best.card.rarity === 'SR') sfxRare();
+  else sfxOpen();
+
+  // Count by rarity
+  const tally = {N:0, R:0, SR:0, SSR:0, UR:0};
+  results.forEach(r => tally[r.card.rarity]++);
+
+  // Stars upgraded count
+  const starUps  = results.filter(r=>!r.res.isNew && !r.res.wasOverflow).length;
+  const overflows= results.filter(r=>r.res.wasOverflow).length;
+  const newCards  = results.filter(r=>r.res.isNew).length;
+
+  const tallyHTML = Object.entries(tally)
+    .filter(([,n])=>n>0)
+    .map(([r,n])=>`<span class="rtag t${r}" style="margin:2px">${r} ×${n}</span>`)
+    .join('');
+
+  document.getElementById('revCard').innerHTML = `
+    <div class="rev-card" style="background:${RGRAD[best.card.rarity]};width:170px;height:240px">
+      <div style="width:80px;height:80px;display:flex;align-items:center;justify-content:center">${imgHTML(best.card.dexNum,72,best.card.em)}</div>
+      <div class="rev-name" style="font-size:11px">#${String(best.card.dexNum).padStart(4,'0')} ${best.card.name}</div>
+      <div style="margin-top:3px"><span class="rtag t${best.card.rarity}" style="font-size:10px">${best.card.rarity}</span></div>
+      <div style="font-size:10px;color:rgba(255,255,255,.7);margin-top:3px">✨ 최고 등급!</div>
+    </div>`;
+
+  document.getElementById('revInfo').innerHTML = `
+    <div style="font-size:16px;margin-top:10px">📦 카드팩 ${count}장 오픈!</div>
+    <div style="margin-top:8px;display:flex;flex-wrap:wrap;justify-content:center;gap:4px">${tallyHTML}</div>
+    <div style="margin-top:8px;font-size:12px;color:var(--td);line-height:1.8">
+      ${newCards>0?`✨ 새 몬스터 <b style="color:var(--a)">${newCards}종</b> 발견!<br>`:''}
+      ${starUps>0?`⭐ 별 강화 <b style="color:var(--s)">${starUps}회</b><br>`:''}
+      ${overflows>0?`📦 경매 가능 <b style="color:var(--p)">${overflows}장</b>`:''}
+    </div>`;
+
+  document.getElementById('revealOv').classList.add('show');
+  if(['SSR','UR'].includes(best.card.rarity)) spark(20);
+  else spark(count >= 100 ? 15 : 8);
+}
+
+// ═══════════════════════════════════════════════════
+// BINDER — shows ALL monsters, including locked ones
+// ═══════════════════════════════════════════════════
+function renderBinder(){
+  const ci=ST.currentCat||0, cat=CATS[ci];
+
+  // Tabs
+  document.getElementById('binderTabs').innerHTML=CATS.map((c,i)=>{
+    // Count owned in this category
+    const owned=Object.keys(ST.cards||{}).filter(k=>k.startsWith(c.id+'_')).length;
+    return `<div class="btab ${i===ci?'active':''}" onclick="selCat(${i})">${c.name} ${owned>0?`<span style="font-size:10px;color:var(--a)">${owned}/${c.cnt}</span>`:''}</div>`;
+  }).join('');
+
+  // Cards
+  const grid=document.getElementById('cardGrid');
+  grid.innerHTML='';
+  const cards=getCatCards(cat.id);
+  cards.forEach(card=>{
+    const cd=ST.cards&&ST.cards[card.id];
+    const owned=!!cd;
+    const stars=cd?cd.stars:0;
+    const overflow=cd?cd.overflow||0:0;
+    const div=document.createElement('div');
+    div.className='cslot '+(owned?'owned':'locked');
+    if(owned) div.addEventListener('click',()=>openDex(card));
+    div.innerHTML=`
+      <div class="cnum">#${String(card.dexNum).padStart(4,'0')}</div>
+      <div class="cimg-w" style="margin-top:2px">
+        ${owned?imgHTML(card.dexNum,46,card.em):`<div class="cemoji-fb" style="opacity:.15;font-size:26px">${card.em}</div>`}
+      </div>
+      <div class="cname">${owned?card.name:'???'}</div>
+      ${owned?`<div class="cstars">${starsHTML(stars,8)}</div>`:''}
+      ${overflow>0?`<div style="position:absolute;top:4px;right:4px;background:var(--s);color:#000;border-radius:8px;padding:1px 5px;font-size:8px">+${overflow}</div>`:''}
+      <div class="rbar rbar-${card.rarity}"></div>`;
+    grid.appendChild(div);
+  });
+
+  // Progress
+  const totalOwned=Object.keys(ST.cards||{}).length;
+  document.getElementById('collCnt').textContent=`${totalOwned.toLocaleString()} / ${TOTAL_MONS.toLocaleString()}`;
+  document.getElementById('collBar').style.width=Math.min((totalOwned/TOTAL_MONS)*100,100)+'%';
+}
+function selCat(i){ST.currentCat=i;addQP('binder');save();renderBinder();sfxClick();preloadCatImages(CATS[i].id);}
+
+// ═══════════════════════════════════════════════════
+// DEX MODAL
+// ═══════════════════════════════════════════════════
+function openDex(card){
+  sfxClick();
+  const cat=CATS.find(c=>c.id===card.catId)||CATS[0];
+  const cd=ST.cards&&ST.cards[card.id];
+  const owned=!!cd;
+  const stars=cd?cd.stars:0;
+  const overflow=cd?cd.overflow||0:0;
+  function bar(val,max,col){ return `<div class="dbar-w"><div class="dbar"><div class="dbar-f" style="width:${Math.min(val/max*100,100)}%;background:${col}"></div></div><span class="dval">${val}</span></div>`; }
+  document.getElementById('dexContent').innerHTML=owned?`
+    <div style="text-align:center">
+      <div class="dnum">#${String(card.dexNum).padStart(4,'0')}</div>
+      <div class="dex-img">${dexImgHTML(card.dexNum,card.em)}</div>
+      <div class="dname">${card.name}</div>
+      <div class="dex-stars">${starsHTML(stars,20)}</div>
+      <div class="dtags">
+        <span class="dtype" style="color:${cat.color}">${cat.name}</span>
+        <span class="rtag t${card.rarity}">${card.rarity} · ${RNAME[card.rarity]}</span>
+      </div>
+    </div>
+    <div class="dex-stats">
+      <div class="drow"><span class="dlbl">❤️ HP</span>${bar(card.hp,600,'#FF6B9D')}</div>
+      <div class="drow"><span class="dlbl">⚔️ 공격</span>${bar(card.atk,300,'#FFD93D')}</div>
+      <div class="drow"><span class="dlbl">🛡️ 방어</span>${bar(card.def,300,'#4D96FF')}</div>
+      <div class="drow"><span class="dlbl">💨 스피드</span>${bar(card.spd,300,'#6BCB77')}</div>
+      <div class="drow"><span class="dlbl">📏 키</span><span class="dval">${card.height}m</span></div>
+      <div class="drow"><span class="dlbl">⚖️ 무게</span><span class="dval">${card.weight}kg</span></div>
+      <div class="drow"><span class="dlbl">⭐ 별 단계</span><span class="dval">${stars} / ${MAX_STARS}</span></div>
+      ${overflow>0?`<div class="drow"><span class="dlbl">📦 판매 가능</span><span class="dval" style="color:var(--s)">${overflow}장</span></div>`:''}
+    </div>
+    <div class="ddesc">${card.desc}</div>
+    ${overflow>0?`
+    <div class="auction-note">
+      📦 ${overflow}장이 경매 대기 중이에요!<br>
+      <button class="btn btn-y btn-xs" style="margin-top:8px" onclick="listAuction('${card.id}');closeDex()">🏛️ 경매 등록</button>
+    </div>`:''}
+    ${stars===MAX_STARS&&overflow===0?`<div style="margin-top:10px;font-size:11px;color:var(--td);text-align:center">⭐×5 완성! 다음 중복부터 경매 가능</div>`:''}
+  `:`<div class="dlocked">
+    <div style="font-size:44px;margin-bottom:8px">❓</div>
+    <div style="font-size:15px">#${String(card.dexNum).padStart(4,'0')}</div>
+    <div style="margin-top:8px">아직 수집 못한 몬스터!<br>가챠나 카드팩으로 도전하세요 🎴</div>
+  </div>`;
+  document.getElementById('dexOv').classList.add('show');
+}
+function closeDex(){document.getElementById('dexOv').classList.remove('show');}
+
+// ═══════════════════════════════════════════════════
+// GACHA
+// ═══════════════════════════════════════════════════
+function doGacha(times){
+  const cost=times===1?100:900;
+  if(ST.coins<cost){notif(`⚠️ 코인 부족! ${cost}코인 필요`);return;}
+  sfxGacha();ST.coins-=cost;ST.gachaCount=(ST.gachaCount||0)+times;
+  updateCoins();addQP('gacha',times);
+  const lev=document.getElementById('mLever');
+  lev.classList.add('pulled');setTimeout(()=>lev.classList.remove('pulled'),500);
+  const body=document.getElementById('mBody'),win=document.getElementById('mWin');
+  body.classList.add('spinning');win.innerHTML='<span style="font-size:48px;filter:blur(1px)">🎲</span>';
+  setTimeout(()=>{
+    body.classList.remove('spinning');
+    let best=null,bestOrd=0;
+    for(let i=0;i<times;i++){
+      const c=rollCard();const res=addCard(c);
+      addQP('collect',1);
+      const ord={N:1,R:2,SR:3,SSR:4,UR:5}[c.rarity];
+      if(ord>bestOrd){bestOrd=ord;best={card:c,res};}
+    }
+    win.innerHTML=`<span style="font-size:52px">${best.card.em}</span>`;
+    save();updateStats();renderBinder();
+    showReveal(best.card,best.res);
+    if(times>1)notif(`🎰 ${times}회! 최고: ${best.card.rarity}`);
+    spark(['SSR','UR'].includes(best.card.rarity)?20:5);
+  },800);
+}
+
+// ═══════════════════════════════════════════════════
+// EXCHANGE / AUCTION
+// ═══════════════════════════════════════════════════
+function buyPack(n){
+  const cost=n===1?300:1400;
+  if(ST.coins<cost){notif(`⚠️ 코인 부족! ${cost}코인 필요`);return;}
+  sfxClick();ST.coins-=cost;ST.packs+=n;updateCoins();updatePacks();save();
+  notif(`🎴 카드팩 ${n}개 구매!`);spark();
+}
+
+// List a card in auction
+function listAuction(cardId){
+  if(!ST.cards[cardId]) return;
+  const cd=ST.cards[cardId];
+  if(cd.overflow<=0){notif('⚠️ 판매할 카드가 없어요! ⭐×5 이후 중복만 판매 가능');return;}
+  cd.overflow--;
+  // Get card data
+  const [catId,idx]=cardId.split('_');
+  const card=getCardData(catId,parseInt(idx));
+  const price=AUC_PRICE[card.rarity]*cd.stars; // stars * base price
+  if(!ST.auction)ST.auction=[];
+  ST.auction.push({cardId,dexNum:card.dexNum,name:card.name,em:card.em,rarity:card.rarity,stars:cd.stars,price,listedAt:Date.now()});
+  save();renderBinder();renderAuction();
+  notif(`🏛️ ${card.name} 경매 등록! 예상가: 🪙${price}`);sfxClick();
+}
+
+function sellAuction(idx){
+  if(!ST.auction||!ST.auction[idx])return;
+  const item=ST.auction[idx];
+  ST.coins+=item.price;
+  ST.auction.splice(idx,1);
+  save();updateCoins();renderAuction();updateStats();
+  notif(`💰 ${item.name} 판매 완료! +🪙${item.price}`);spark(10);sfxSSR();
+}
+
+function renderAuction(){
+  if(!ST.auction)ST.auction=[];
+  const list=document.getElementById('auctionList');
+  if(!list)return;
+  if(ST.auction.length===0){
+    list.innerHTML=`<div class="empty-auc">📭 경매 등록된 카드가 없어요<br><span style="font-size:12px;margin-top:4px;display:block">⭐×5 카드를 중복으로 뽑으면 등록 가능!</span></div>`;
+    return;
+  }
+  list.innerHTML=ST.auction.map((item,i)=>`
+    <div class="auction-item">
+      <div class="aucimg">${imgHTML(item.dexNum,44,item.em)}</div>
+      <div class="aucinfo">
+        <div class="aucname">${item.name}</div>
+        <div class="aucmeta">#${String(item.dexNum).padStart(4,'0')} · <span class="rtag t${item.rarity}" style="font-size:10px">${item.rarity}</span></div>
+        <div class="auc-stars">${starsHTML(item.stars,11)}</div>
+      </div>
+      <div class="aucprice">🪙 ${item.price}<br><button class="btn btn-g btn-xs" style="margin-top:6px" onclick="sellAuction(${i})">판매!</button></div>
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════════════════════
+// STATS
+// ═══════════════════════════════════════════════════
+function updateStats(){
+  const c=ST.cards||{};
+  document.getElementById('stCards').textContent=Object.keys(c).length;
+  document.getElementById('stTotal').textContent=Object.values(c).reduce((a,v)=>a+v.stars+(v.overflow||0),0);
+  document.getElementById('stGacha').textContent=ST.gachaCount||0;
+  document.getElementById('stDays').textContent=(ST.loginDays||[]).length;
+}
+
+// ═══════════════════════════════════════════════════
+// SETTINGS
+// ═══════════════════════════════════════════════════
+function openCfg(){
+  sfxClick();
+  document.getElementById('cfgUser').textContent=ST.username+' 트레이너';
+  applySettings();document.getElementById('cfgOv').classList.add('show');
+}
+function closeCfg(){document.getElementById('cfgOv').classList.remove('show');}
+
+function testImage(){
+  const val = document.getElementById('imgTestInput').value.trim();
+  const num = parseInt(val);
+  const res = document.getElementById('imgTestResult');
+  const prev = document.getElementById('imgTestPreview');
+  if(!num){ res.textContent='⚠️ 숫자를 입력해주세요'; res.style.color='#FF6B9D'; return; }
+  res.textContent='🔍 확인 중...'; res.style.color='var(--td)';
+  prev.innerHTML='';
+  const exts=['svg','png','jpg','jpeg','webp','gif'];
+  let tried=0, found=false;
+  exts.forEach(ext=>{
+    const img=new Image();
+    img.onload=()=>{
+      if(found) return; found=true;
+      res.textContent='✅ 발견! images/'+num+'.'+ext+' ('+img.naturalWidth+'×'+img.naturalHeight+'px)';
+      res.style.color='#6BCB77';
+      prev.innerHTML='<img src="images/'+num+'.'+ext+'?t='+Date.now()+'" style="width:48px;height:48px;object-fit:contain;border-radius:6px">';
+    };
+    img.onerror=()=>{
+      tried++;
+      if(tried===exts.length && !found){
+        res.textContent='❌ images/'+num+'.svg/png/jpg... 파일을 찾을 수 없어요';
+        res.style.color='#FF6B9D';
+        prev.innerHTML='<span style="font-size:10px">없음</span>';
+      }
+    };
+    img.src='images/'+num+'.'+ext+'?t='+Date.now();
+  });
+}
+
+function clearImgCache(){
+  // Force all img elements to re-try by touching renderBinder
+  renderBinder();
+  notif('🔄 보관함 이미지 새로고침!');
+}
+function applySettings(){
+  ['BGM','SFX','Part'].forEach(k=>{
+    const el=document.getElementById('t'+k);
+    if(el)el.classList.toggle('on',CFG[k==='Part'?'particle':k.toLowerCase()]);
+  });
+  const vs=document.getElementById('volSl');if(vs)vs.value=CFG.volume;
+}
+function toggleCfg(key){CFG[key]=!CFG[key];applySettings();saveCFG();if(key==='bgm'){CFG.bgm?startBGM():stopBGM();}}
+function setVol(v){CFG.volume=parseInt(v);saveCFG();}
+function doLogout(){
+  if(confirm(`${ST.username} 트레이너로 로그아웃 할까요?`)){
+    closeCfg();stopBGM();
+    document.getElementById('gameScreen').style.display='none';
+    document.getElementById('loginScreen').style.display='flex';
+    document.getElementById('uInput').value='';
+    showLoginHist();
+  }
+}
+
+// ═══════════════════════════════════════════════════
+// NAV
+// ═══════════════════════════════════════════════════
+function switchPage(name,btn){
+  sfxClick();
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page'+name).classList.add('active');btn.classList.add('active');
+  if(name==='Binder')renderBinder();
+  if(name==='Exchange'){updateStats();renderAuction();}
+}
+
+// ═══════════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════════
+function notif(msg){
+  const n=document.getElementById('notif');
+  n.textContent=msg;n.classList.add('show');
+  clearTimeout(n._t);n._t=setTimeout(()=>n.classList.remove('show'),2800);
+}
+function spark(cnt=8){
+  if(!CFG.particle)return;
+  const em=['✨','⭐','🌟','💫','🎉','🎊','🌈','🍀'];
+  for(let i=0;i<cnt;i++) setTimeout(()=>{
+    const el=document.createElement('div');el.className='sparkle';
+    el.textContent=em[Math.floor(Math.random()*em.length)];
+    el.style.left=(20+Math.random()*60)+'vw';el.style.top=(20+Math.random()*60)+'vh';
+    document.body.appendChild(el);setTimeout(()=>el.remove(),900);
+  },i*100);
+}
+
+// ═══════════════════════════════════════════════════
+// META WORLD 연동
+// ═══════════════════════════════════════════════════
+function goToMetaWorld(){
+  window.location.href='../../index.html';
+}
+
+function getMWSession(){
+  try{ return JSON.parse(localStorage.getItem('mw_session')||'null'); }
+  catch(e){ return null; }
+}
+
+function loginWithMW(){
+  const s=getMWSession();
+  if(!s){ notif('⚠️ Meta World 세션이 없어요!'); return; }
+  // MW 닉네임으로 자동 로그인 (ym_ 키에 저장)
+  const n=s.name;
+  document.getElementById('uInput').value=n;
+  login();
+}
+
+function initMWSession(){
+  const s=getMWSession();
+  // 네비바 유저칩 업데이트
+  const chip=document.getElementById('mwUserChip');
+  if(s && chip){ chip.textContent='👤 '+s.name; }
+
+  // 로그인 화면에 자동로그인 배너 표시
+  const banner=document.getElementById('mwAutoLoginBanner');
+  const nameEl=document.getElementById('mwAutoLoginName');
+  const divider=document.getElementById('mwDivider');
+  if(s && banner){
+    banner.style.display='block';
+    if(nameEl) nameEl.textContent='👤 '+s.name+' 트레이너';
+    if(divider) divider.style.display='flex';
+  }
+
+  // 이미 게임 상태가 저장돼 있으면 자동 로그인
+  if(s){
+    const saved=localStorage.getItem('ym_'+s.name);
+    if(saved){
+      document.getElementById('uInput').value=s.name;
+      login();
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════
+// STARS BG
+// ═══════════════════════════════════════════════════
+(()=>{const c=document.getElementById('stars');for(let i=0;i<55;i++){const s=document.createElement('div');s.className='star';
+  s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';
+  s.style.animationDelay=Math.random()*3+'s';s.style.animationDuration=(2+Math.random()*3)+'s';c.appendChild(s);}})();
+
+// BOOT
+showLoginHist();
+const lu=localStorage.getItem('ym_last');if(lu)document.getElementById('uInput').value=lu;
+initMWSession();
+</script>
+</body>
+</html>

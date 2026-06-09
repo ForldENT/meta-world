@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>YumMonsters SVG 프리뷰</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+<style>
+  body { font-family: 'Jua', cursive; background: #1A0A2E; color: #FFF0F8; margin: 0; padding: 24px; }
+  h1 { text-align: center; color: #FF6B9D; font-size: 28px; margin-bottom: 8px; }
+  p.sub { text-align: center; color: #C9A8E0; font-size: 14px; margin-bottom: 32px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
+  .card { background: #231540; border-radius: 20px; padding: 16px; text-align: center; border: 1px solid rgba(255,107,157,.2); transition: transform .2s; }
+  .card:hover { transform: scale(1.04); border-color: #FF6B9D; }
+  .card img { width: 160px; height: 160px; object-fit: contain; }
+  .card .num { font-size: 11px; color: #C9A8E0; margin-bottom: 4px; }
+  .card .name { font-size: 16px; color: #FFF0F8; }
+  .card .type { font-size: 12px; margin-top: 4px; padding: 3px 10px; border-radius: 10px; display: inline-block; }
+  .tip { background: rgba(255,107,157,.1); border: 1px solid rgba(255,107,157,.3); border-radius: 14px; padding: 16px 20px; max-width: 700px; margin: 0 auto 32px; font-size: 13px; line-height: 1.8; color: #C9A8E0; text-align: center; }
+  code { background: rgba(255,255,255,.08); padding: 1px 6px; border-radius: 4px; font-size: 12px; }
+</style>
+</head>
+<body>
+<h1>🍔 YumMonsters SVG 샘플 캐릭터</h1>
+<p class="sub">각 타입별 대표 캐릭터 SVG 10종 · 게임에 바로 적용 가능!</p>
+
+<div class="tip">
+  📁 <b>게임에 적용하려면</b><br>
+  이 <code>images/</code> 폴더를 <code>gacha-game.html</code>과 같은 폴더에 놓으세요.<br>
+  SVG 파일명 = 도감번호. 예: <code>1.svg</code>, <code>10001.svg</code>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <div class="num">#0001 · 불꽃 타입</div>
+    <img src="images/1.svg" alt="Flame Bear">
+    <div class="name">🔥 불꽃곰</div>
+    <div class="type" style="background:rgba(255,107,43,.2);color:#FF6B2B">🔥 불꽃</div>
+  </div>
+  <div class="card">
+    <div class="num">#10001 · 물 타입</div>
+    <img src="images/10001.svg" alt="Water Seal">
+    <div class="name">💧 물방울물범</div>
+    <div class="type" style="background:rgba(77,150,255,.2);color:#4D96FF">💧 물</div>
+  </div>
+  <div class="card">
+    <div class="num">#20001 · 풀 타입</div>
+    <img src="images/20001.svg" alt="Broccoli Bunny">
+    <div class="name">🌿 브로콜리토끼</div>
+    <div class="type" style="background:rgba(107,203,119,.2);color:#6BCB77">🌿 풀</div>
+  </div>
+  <div class="card">
+    <div class="num">#30001 · 전기 타입</div>
+    <img src="images/30001.svg" alt="Thunder Hamster">
+    <div class="name">⚡ 번개햄스터</div>
+    <div class="type" style="background:rgba(255,217,61,.2);color:#FFD93D">⚡ 전기</div>
+  </div>
+  <div class="card">
+    <div class="num">#40001 · 얼음 타입</div>
+    <img src="images/40001.svg" alt="Snowflake Polar Bear">
+    <div class="name">❄️ 눈꽃북극곰</div>
+    <div class="type" style="background:rgba(168,218,220,.2);color:#A8DADC">❄️ 얼음</div>
+  </div>
+  <div class="card">
+    <div class="num">#90001 · 드래곤 타입</div>
+    <img src="images/90001.svg" alt="Grape Dragon">
+    <div class="name">🐉 포도드래곤</div>
+    <div class="type" style="background:rgba(155,89,182,.2);color:#9B59B6">🐉 드래곤</div>
+  </div>
+  <div class="card">
+    <div class="num">#100001 · 달콤 타입</div>
+    <img src="images/100001.svg" alt="Lollipop Cat">
+    <div class="name">🍭 막대사탕고양이</div>
+    <div class="type" style="background:rgba(255,133,161,.2);color:#FF85A1">🍭 달콤</div>
+  </div>
+  <div class="card">
+    <div class="num">#120001 · 빵 타입</div>
+    <img src="images/120001.svg" alt="Sesame Bun Puppy">
+    <div class="name">🍞 깨소금빵강아지</div>
+    <div class="type" style="background:rgba(232,184,109,.2);color:#E8B86D">🍞 빵</div>
+  </div>
+  <div class="card">
+    <div class="num">#150001 · 고기 타입</div>
+    <img src="images/150001.svg" alt="Drumstick Lion">
+    <div class="name">🥩 닭다리사자</div>
+    <div class="type" style="background:rgba(192,57,43,.2);color:#C0392B">🥩 고기</div>
+  </div>
+  <div class="card">
+    <div class="num">#160001 · 바다 타입</div>
+    <img src="images/160001.svg" alt="Fish Otter">
+    <div class="name">🐟 물고기수달</div>
+    <div class="type" style="background:rgba(0,153,204,.2);color:#0099CC">🐟 바다</div>
+  </div>
+  <div class="card">
+    <div class="num">#190001 · 우주 타입</div>
+    <img src="images/190001.svg" alt="Galaxy Cat">
+    <div class="name">✨ 은하수고양이</div>
+    <div class="type" style="background:rgba(162,155,254,.2);color:#A29BFE">✨ 우주</div>
+  </div>
+</div>
+</body>
+</html>

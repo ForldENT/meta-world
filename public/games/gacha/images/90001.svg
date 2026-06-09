@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <radialGradient id="bg10" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#EDE7F6"/>
+      <stop offset="100%" stop-color="#D1C4E9"/>
+    </radialGradient>
+    <radialGradient id="body10" cx="40%" cy="35%" r="60%">
+      <stop offset="0%" stop-color="#B39DDB"/>
+      <stop offset="55%" stop-color="#7E57C2"/>
+      <stop offset="100%" stop-color="#311B92"/>
+    </radialGradient>
+    <radialGradient id="wing10" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#E1BEE7"/>
+      <stop offset="50%" stop-color="#9575CD"/>
+      <stop offset="100%" stop-color="#4527A0"/>
+    </radialGradient>
+    <filter id="dragonGlow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="drop10">
+      <feDropShadow dx="2" dy="5" stdDeviation="5" flood-color="rgba(49,27,146,0.35)"/>
+    </filter>
+  </defs>
+
+  <circle cx="100" cy="100" r="90" fill="url(#bg10)" opacity="0.5"/>
+
+  <!-- Wings behind body -->
+  <path d="M60 110 Q25 70 40 40 Q55 20 72 50 Q78 65 72 90Z" fill="url(#wing10)" filter="url(#drop10)" opacity="0.9"/>
+  <path d="M140 110 Q175 70 160 40 Q145 20 128 50 Q122 65 128 90Z" fill="url(#wing10)" filter="url(#drop10)" opacity="0.9"/>
+  <!-- Wing membrane lines -->
+  <path d="M70 90 Q55 65 62 44" stroke="#9575CD" stroke-width="1.5" fill="none" opacity="0.6"/>
+  <path d="M70 90 Q45 72 44 52" stroke="#9575CD" stroke-width="1" fill="none" opacity="0.5"/>
+  <path d="M130 90 Q145 65 138 44" stroke="#9575CD" stroke-width="1.5" fill="none" opacity="0.6"/>
+  <path d="M130 90 Q155 72 156 52" stroke="#9575CD" stroke-width="1" fill="none" opacity="0.5"/>
+
+  <!-- Body -->
+  <ellipse cx="100" cy="130" rx="40" ry="38" fill="url(#body10)" filter="url(#drop10)"/>
+  <!-- Scale belly -->
+  <ellipse cx="100" cy="132" rx="24" ry="25" fill="#D1C4E9" opacity="0.7"/>
+  <!-- Scale pattern -->
+  <g opacity="0.3" fill="#7E57C2">
+    <ellipse cx="91" cy="118" rx="7" ry="5"/>
+    <ellipse cx="105" cy="116" rx="7" ry="5"/>
+    <ellipse cx="87" cy="127" rx="7" ry="5"/>
+    <ellipse cx="101" cy="126" rx="7" ry="5"/>
+    <ellipse cx="115" cy="127" rx="7" ry="5"/>
+    <ellipse cx="94" cy="136" rx="7" ry="5"/>
+    <ellipse cx="108" cy="136" rx="7" ry="5"/>
+  </g>
+
+  <!-- Arms with claws -->
+  <ellipse cx="62" cy="124" rx="13" ry="10" fill="#7E57C2" transform="rotate(-25,62,124)"/>
+  <ellipse cx="138" cy="124" rx="13" ry="10" fill="#7E57C2" transform="rotate(25,138,124)"/>
+  <!-- Claws -->
+  <g stroke="#311B92" stroke-width="2" stroke-linecap="round">
+    <line x1="47" y1="131" x2="44" y2="138"/><line x1="51" y1="133" x2="49" y2="141"/><line x1="55" y1="134" x2="54" y2="142"/>
+    <line x1="153" y1="131" x2="156" y2="138"/><line x1="149" y1="133" x2="151" y2="141"/><line x1="145" y1="134" x2="146" y2="142"/>
+  </g>
+
+  <!-- Legs -->
+  <ellipse cx="82" cy="163" rx="14" ry="9" fill="#7E57C2"/>
+  <ellipse cx="118" cy="163" rx="14" ry="9" fill="#7E57C2"/>
+  <!-- Leg claws -->
+  <g stroke="#311B92" stroke-width="2" stroke-linecap="round">
+    <line x1="73" y1="170" x2="71" y2="177"/><line x1="80" y1="172" x2="79" y2="179"/><line x1="87" y1="171" x2="87" y2="178"/>
+    <line x1="113" y1="170" x2="111" y2="177"/><line x1="120" y1="172" x2="119" y2="179"/><line x1="127" y1="171" x2="127" y2="178"/>
+  </g>
+
+  <!-- Dragon tail -->
+  <path d="M138 152 Q162 144 164 162 Q166 176 152 170 Q140 165 142 155" stroke="#7E57C2" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <!-- tail spikes -->
+  <polygon points="158,156 164,150 162,162" fill="#9575CD"/>
+  <polygon points="162,163 168,158 165,170" fill="#7E57C2"/>
+
+  <!-- Head -->
+  <circle cx="100" cy="90" r="35" fill="url(#body10)" filter="url(#drop10)"/>
+  <ellipse cx="100" cy="94" rx="22" ry="19" fill="#D1C4E9" opacity="0.7"/>
+
+  <!-- Dragon horns -->
+  <polygon points="78,66 72,48 84,62" fill="#9575CD"/>
+  <polygon points="78,66 73,50 82,64" fill="#B39DDB" opacity="0.6"/>
+  <polygon points="122,66 116,48 128,62" fill="#9575CD"/>
+  <polygon points="122,66 118,50 127,64" fill="#B39DDB" opacity="0.6"/>
+
+  <!-- Eyes — glowing -->
+  <circle cx="88" cy="86" r="9" fill="white" filter="url(#dragonGlow)"/>
+  <circle cx="112" cy="86" r="9" fill="white" filter="url(#dragonGlow)"/>
+  <circle cx="90" cy="87" r="6" fill="#4527A0"/>
+  <circle cx="114" cy="87" r="6" fill="#4527A0"/>
+  <!-- slit pupils -->
+  <ellipse cx="90" cy="87" rx="2" ry="5" fill="#1A237E"/>
+  <ellipse cx="114" cy="87" rx="2" ry="5" fill="#1A237E"/>
+  <circle cx="91.5" cy="85" r="2" fill="white"/>
+  <circle cx="115.5" cy="85" r="2" fill="white"/>
+
+  <!-- Blush -->
+  <ellipse cx="78" cy="97" rx="9" ry="6" fill="#CE93D8" opacity="0.5"/>
+  <ellipse cx="122" cy="97" rx="9" ry="6" fill="#CE93D8" opacity="0.5"/>
+
+  <!-- Snout -->
+  <ellipse cx="100" cy="100" rx="12" ry="8" fill="#9575CD" opacity="0.5"/>
+  <ellipse cx="96" cy="99" rx="3" ry="2.5" fill="#4527A0"/>
+  <ellipse cx="104" cy="99" rx="3" ry="2.5" fill="#4527A0"/>
+  <path d="M91 105 Q100 112 109 105" stroke="#4527A0" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+  <!-- Magic fire breath -->
+  <path d="M104 107 Q112 100 118 106 Q114 114 108 110Z" fill="#CE93D8" opacity="0.5" filter="url(#dragonGlow)"/>
+  <path d="M104 107 Q111 102 116 107 Q113 112 108 110Z" fill="#E040FB" opacity="0.4" filter="url(#dragonGlow)"/>
+
+  <!-- Floating magic gems -->
+  <g filter="url(#dragonGlow)">
+    <polygon points="62,95 65,100 62,105 59,100" fill="#E040FB" opacity="0.8"/>
+    <polygon points="138,92 141,97 138,102 135,97" fill="#7C4DFF" opacity="0.8"/>
+    <circle cx="68" cy="110" r="3" fill="#CE93D8" opacity="0.7"/>
+    <circle cx="133" cy="108" r="3" fill="#B39DDB" opacity="0.7"/>
+  </g>
+</svg>

@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <radialGradient id="bg20" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#EDE7F6"/>
+      <stop offset="100%" stop-color="#D1C4E9"/>
+    </radialGradient>
+    <radialGradient id="body20" cx="40%" cy="35%" r="60%">
+      <stop offset="0%" stop-color="#CE93D8"/>
+      <stop offset="50%" stop-color="#9C27B0"/>
+      <stop offset="100%" stop-color="#4A148C"/>
+    </radialGradient>
+    <radialGradient id="cosmo" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1A237E"/>
+      <stop offset="50%" stop-color="#283593"/>
+      <stop offset="100%" stop-color="#0D0D2B"/>
+    </radialGradient>
+    <filter id="starGlow">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="drop20">
+      <feDropShadow dx="2" dy="4" stdDeviation="5" flood-color="rgba(74,20,140,0.4)"/>
+    </filter>
+  </defs>
+
+  <!-- Space bg -->
+  <circle cx="100" cy="100" r="90" fill="url(#cosmo)" opacity="0.5"/>
+  <!-- tiny stars in bg -->
+  <g fill="white" opacity="0.6">
+    <circle cx="30" cy="40" r="1.5"/><circle cx="55" cy="25" r="1"/><circle cx="170" cy="35" r="1.5"/>
+    <circle cx="155" cy="60" r="1"/><circle cx="175" cy="80" r="1.5"/><circle cx="25" cy="80" r="1"/>
+    <circle cx="40" cy="155" r="1.5"/><circle cx="165" cy="150" r="1"/><circle cx="180" cy="130" r="1.5"/>
+    <circle cx="22" cy="120" r="1"/><circle cx="70" cy="180" r="1.5"/><circle cx="130" cy="178" r="1"/>
+  </g>
+
+  <!-- Galaxy swirl behind body -->
+  <ellipse cx="100" cy="125" rx="52" ry="48" fill="url(#body20)" opacity="0.3" filter="url(#starGlow)"/>
+
+  <!-- Body -->
+  <ellipse cx="100" cy="130" rx="42" ry="40" fill="url(#body20)" filter="url(#drop20)"/>
+  <!-- Galaxy belly -->
+  <ellipse cx="100" cy="130" rx="26" ry="27" fill="url(#cosmo)" opacity="0.9"/>
+  <!-- galaxy spiral -->
+  <path d="M100 115 Q110 120 108 130 Q106 140 96 140 Q86 138 88 128 Q90 118 100 118" stroke="#7986CB" stroke-width="1.5" fill="none" opacity="0.8"/>
+  <path d="M100 118 Q107 122 105 130 Q103 137 97 137 Q91 135 93 129" stroke="#9FA8DA" stroke-width="1" fill="none" opacity="0.6"/>
+  <!-- stars on belly -->
+  <g filter="url(#starGlow)" fill="#E8EAF6">
+    <polygon points="100,118 101,122 105,122 102,124 103,128 100,126 97,128 98,124 95,122 99,122" opacity="0.9"/>
+    <circle cx="90" cy="136" r="2" opacity="0.7"/>
+    <circle cx="111" cy="133" r="1.5" opacity="0.7"/>
+    <circle cx="96" cy="144" r="1.5" opacity="0.6"/>
+  </g>
+
+  <!-- Arms -->
+  <ellipse cx="62" cy="126" rx="13" ry="10" fill="#9C27B0" transform="rotate(-25,62,126)"/>
+  <ellipse cx="138" cy="126" rx="13" ry="10" fill="#9C27B0" transform="rotate(25,138,126)"/>
+  <circle cx="52" cy="136" r="10" fill="#CE93D8"/>
+  <circle cx="148" cy="136" r="10" fill="#CE93D8"/>
+
+  <!-- Legs -->
+  <ellipse cx="82" cy="163" rx="14" ry="9" fill="#9C27B0"/>
+  <ellipse cx="118" cy="163" rx="14" ry="9" fill="#9C27B0"/>
+  <ellipse cx="80" cy="171" rx="13" ry="7" fill="#CE93D8"/>
+  <ellipse cx="120" cy="171" rx="13" ry="7" fill="#CE93D8"/>
+
+  <!-- Comet tail -->
+  <path d="M142 148 Q168 132 165 118 Q163 108 158 112" stroke="#B39DDB" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.8" filter="url(#starGlow)"/>
+  <circle cx="157" cy="113" r="6" fill="#E1BEE7" filter="url(#starGlow)"/>
+  <path d="M152 143 Q170 132 168 122" stroke="#CE93D8" stroke-width="2" fill="none" opacity="0.5"/>
+
+  <!-- Head -->
+  <circle cx="100" cy="90" r="36" fill="url(#body20)" filter="url(#drop20)"/>
+
+  <!-- Cat ears with stars -->
+  <polygon points="68,68 72,48 82,66" fill="#7B1FA2"/>
+  <polygon points="70,68 73,53 80,67" fill="#CE93D8" opacity="0.6"/>
+  <polygon points="118,68 128,48 132,66" fill="#7B1FA2"/>
+  <polygon points="120,68 127,53 130,67" fill="#CE93D8" opacity="0.6"/>
+
+  <!-- Galaxy face patch -->
+  <ellipse cx="100" cy="94" rx="22" ry="19" fill="url(#cosmo)" opacity="0.75"/>
+
+  <!-- Eyes — galaxy swirl pupils -->
+  <circle cx="88" cy="87" r="9" fill="white"/>
+  <circle cx="112" cy="87" r="9" fill="white"/>
+  <circle cx="89.5" cy="88" r="6.5" fill="#1A237E"/>
+  <circle cx="113.5" cy="88" r="6.5" fill="#1A237E"/>
+  <!-- star pupils -->
+  <g filter="url(#starGlow)" fill="white">
+    <polygon points="89.5,84.5 90.2,87 92.5,87 90.7,88.5 91.4,91 89.5,89.5 87.6,91 88.3,88.5 86.5,87 88.8,87"/>
+    <polygon points="113.5,84.5 114.2,87 116.5,87 114.7,88.5 115.4,91 113.5,89.5 111.6,91 112.3,88.5 110.5,87 112.8,87"/>
+  </g>
+
+  <!-- Blush — nebula purple -->
+  <ellipse cx="78" cy="98" rx="9" ry="6" fill="#CE93D8" opacity="0.5"/>
+  <ellipse cx="122" cy="98" rx="9" ry="6" fill="#CE93D8" opacity="0.5"/>
+
+  <!-- Nose -->
+  <ellipse cx="100" cy="98" rx="4" ry="3" fill="#4A148C"/>
+  <path d="M91 105 Q100 113 109 105" stroke="#4A148C" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+  <!-- Floating star crown -->
+  <g filter="url(#starGlow)">
+    <polygon points="100,48 102,55 109,55 103.5,59 105.5,66 100,62 94.5,66 96.5,59 91,55 98,55" fill="#FFF59D"/>
+    <polygon points="100,48 102,55 109,55 103.5,59 105.5,66 100,62 94.5,66 96.5,59 91,55 98,55" fill="#FFD700" opacity="0.6"/>
+  </g>
+
+  <!-- Floating cosmic sparkles -->
+  <circle cx="62" cy="106" r="3" fill="#E040FB" opacity="0.8" filter="url(#starGlow)"/>
+  <circle cx="140" cy="102" r="2.5" fill="#7C4DFF" opacity="0.8" filter="url(#starGlow)"/>
+  <circle cx="68" cy="148" r="2" fill="#40C4FF" opacity="0.7" filter="url(#starGlow)"/>
+  <circle cx="134" cy="150" r="2" fill="#FFFF00" opacity="0.7" filter="url(#starGlow)"/>
+</svg>

@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <radialGradient id="bg2" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#E3F2FD"/>
+      <stop offset="100%" stop-color="#BBDEFB"/>
+    </radialGradient>
+    <radialGradient id="body2" cx="40%" cy="35%" r="60%">
+      <stop offset="0%" stop-color="#90CAF9"/>
+      <stop offset="60%" stop-color="#42A5F5"/>
+      <stop offset="100%" stop-color="#1565C0"/>
+    </radialGradient>
+    <radialGradient id="belly2" cx="50%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#E3F2FD"/>
+      <stop offset="100%" stop-color="#BBDEFB"/>
+    </radialGradient>
+    <filter id="waterGlow">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="drop2">
+      <feDropShadow dx="2" dy="4" stdDeviation="4" flood-color="rgba(30,100,200,0.25)"/>
+    </filter>
+  </defs>
+
+  <circle cx="100" cy="100" r="90" fill="url(#bg2)" opacity="0.55"/>
+
+  <!-- Water droplet ears/fins on head -->
+  <ellipse cx="68" cy="62" rx="10" ry="16" fill="#64B5F6" transform="rotate(-25,68,62)"/>
+  <ellipse cx="132" cy="62" rx="10" ry="16" fill="#64B5F6" transform="rotate(25,132,62)"/>
+
+  <!-- Blue water drops floating -->
+  <g filter="url(#waterGlow)">
+    <ellipse cx="58" cy="85" rx="6" ry="9" fill="#29B6F6" opacity="0.7"/>
+    <ellipse cx="142" cy="85" rx="6" ry="9" fill="#29B6F6" opacity="0.7"/>
+    <circle cx="55" cy="78" r="3" fill="#81D4FA" opacity="0.8"/>
+    <circle cx="145" cy="78" r="3" fill="#81D4FA" opacity="0.8"/>
+  </g>
+
+  <!-- Body -->
+  <ellipse cx="100" cy="128" rx="42" ry="40" fill="url(#body2)" filter="url(#drop2)"/>
+  <!-- Belly -->
+  <ellipse cx="100" cy="128" rx="26" ry="27" fill="url(#belly2)"/>
+
+  <!-- Arms -->
+  <ellipse cx="62" cy="128" rx="13" ry="10" fill="#42A5F5" transform="rotate(-25,62,128)"/>
+  <ellipse cx="138" cy="128" rx="13" ry="10" fill="#42A5F5" transform="rotate(25,138,128)"/>
+  <!-- Paws -->
+  <circle cx="52" cy="138" r="10" fill="#90CAF9"/>
+  <circle cx="148" cy="138" r="10" fill="#90CAF9"/>
+
+  <!-- Legs/feet -->
+  <ellipse cx="82" cy="163" rx="14" ry="9" fill="#42A5F5"/>
+  <ellipse cx="118" cy="163" rx="14" ry="9" fill="#42A5F5"/>
+  <ellipse cx="80" cy="171" rx="13" ry="7" fill="#90CAF9"/>
+  <ellipse cx="120" cy="171" rx="13" ry="7" fill="#90CAF9"/>
+
+  <!-- Head -->
+  <circle cx="100" cy="90" r="36" fill="url(#body2)" filter="url(#drop2)"/>
+  <ellipse cx="100" cy="94" rx="22" ry="19" fill="url(#belly2)"/>
+
+  <!-- Water bubble on head -->
+  <circle cx="100" cy="56" r="10" fill="#29B6F6" opacity="0.6" filter="url(#waterGlow)"/>
+  <circle cx="100" cy="52" r="6" fill="#E3F2FD" opacity="0.5"/>
+
+  <!-- Eyes -->
+  <circle cx="89" cy="86" r="8" fill="white"/>
+  <circle cx="111" cy="86" r="8" fill="white"/>
+  <circle cx="91" cy="87" r="5" fill="#1A237E"/>
+  <circle cx="113" cy="87" r="5" fill="#1A237E"/>
+  <circle cx="92" cy="85" r="2" fill="white"/>
+  <circle cx="114" cy="85" r="2" fill="white"/>
+
+  <!-- Blush -->
+  <ellipse cx="79" cy="97" rx="9" ry="6" fill="#90CAF9" opacity="0.6"/>
+  <ellipse cx="121" cy="97" rx="9" ry="6" fill="#90CAF9" opacity="0.6"/>
+
+  <!-- Nose -->
+  <ellipse cx="100" cy="97" rx="4" ry="3" fill="#1565C0"/>
+
+  <!-- Happy mouth -->
+  <path d="M91 104 Q100 112 109 104" stroke="#1565C0" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+  <!-- Fish tail (水 type) -->
+  <path d="M140 150 Q165 138 162 155 Q165 172 140 162 Z" fill="#42A5F5"/>
+  <path d="M140 156" stroke="#1565C0" stroke-width="1.5" fill="none"/>
+
+  <!-- Tiny water sparkles -->
+  <circle cx="65" cy="108" r="3" fill="#81D4FA" opacity="0.7"/>
+  <circle cx="136" cy="105" r="2.5" fill="#B3E5FC" opacity="0.8"/>
+  <circle cx="72" cy="150" r="2" fill="#29B6F6" opacity="0.6"/>
+</svg>

@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <radialGradient id="bg16" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#F3E5F5"/>
+      <stop offset="100%" stop-color="#E1BEE7"/>
+    </radialGradient>
+    <radialGradient id="body16" cx="40%" cy="35%" r="60%">
+      <stop offset="0%" stop-color="#EF9A9A"/>
+      <stop offset="50%" stop-color="#E53935"/>
+      <stop offset="100%" stop-color="#7F0000"/>
+    </radialGradient>
+    <radialGradient id="meat" cx="35%" cy="30%" r="65%">
+      <stop offset="0%" stop-color="#FFCCBC"/>
+      <stop offset="50%" stop-color="#FF8A65"/>
+      <stop offset="100%" stop-color="#BF360C"/>
+    </radialGradient>
+    <filter id="meatGlow">
+      <feGaussianBlur stdDeviation="1.5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="drop16">
+      <feDropShadow dx="2" dy="4" stdDeviation="4" flood-color="rgba(127,0,0,0.25)"/>
+    </filter>
+  </defs>
+
+  <circle cx="100" cy="100" r="90" fill="url(#bg16)" opacity="0.5"/>
+
+  <!-- Drumstick ears -->
+  <g transform="translate(65,60) rotate(-20)">
+    <ellipse cx="0" cy="0" rx="13" ry="17" fill="url(#meat)"/>
+    <rect x="-4" y="14" width="8" height="12" rx="2" fill="#FFCCBC"/>
+    <ellipse cx="0" cy="25" rx="6" ry="4" fill="#FFAB91"/>
+  </g>
+  <g transform="translate(135,60) rotate(20)">
+    <ellipse cx="0" cy="0" rx="13" ry="17" fill="url(#meat)"/>
+    <rect x="-4" y="14" width="8" height="12" rx="2" fill="#FFCCBC"/>
+    <ellipse cx="0" cy="25" rx="6" ry="4" fill="#FFAB91"/>
+  </g>
+
+  <!-- Body -->
+  <ellipse cx="100" cy="130" rx="44" ry="41" fill="url(#body16)" filter="url(#drop16)"/>
+  <!-- Tummy - lighter pink -->
+  <ellipse cx="100" cy="132" rx="27" ry="28" fill="#FFCCBC" opacity="0.7"/>
+  <!-- Marble fat pattern -->
+  <path d="M88 114 Q96 118 92 126 Q96 132 104 128 Q112 124 108 132" stroke="white" stroke-width="2" fill="none" opacity="0.3" stroke-linecap="round"/>
+  <path d="M95 140 Q102 136 108 140" stroke="white" stroke-width="1.5" fill="none" opacity="0.3"/>
+
+  <!-- Arms (holding drumsticks) -->
+  <ellipse cx="60" cy="124" rx="14" ry="10" fill="#E53935" transform="rotate(-25,60,124)"/>
+  <ellipse cx="140" cy="124" rx="14" ry="10" fill="#E53935" transform="rotate(25,140,124)"/>
+  <!-- Paws -->
+  <circle cx="49" cy="134" r="11" fill="#EF9A9A"/>
+  <circle cx="151" cy="134" r="11" fill="#EF9A9A"/>
+
+  <!-- Drumstick held in right paw -->
+  <g transform="translate(155,115) rotate(35)">
+    <ellipse cx="0" cy="0" rx="9" ry="12" fill="url(#meat)" filter="url(#meatGlow)"/>
+    <rect x="-3" y="10" width="6" height="16" rx="2" fill="#FFCCBC"/>
+    <ellipse cx="0" cy="26" rx="5" ry="3" fill="#FFAB91"/>
+    <!-- crispy golden top -->
+    <ellipse cx="0" cy="-4" rx="7" ry="5" fill="#FFB300" opacity="0.7"/>
+  </g>
+
+  <!-- Legs -->
+  <ellipse cx="82" cy="164" rx="15" ry="10" fill="#E53935"/>
+  <ellipse cx="118" cy="164" rx="15" ry="10" fill="#E53935"/>
+  <ellipse cx="80" cy="172" rx="14" ry="8" fill="#EF9A9A"/>
+  <ellipse cx="120" cy="172" rx="14" ry="8" fill="#EF9A9A"/>
+
+  <!-- Head -->
+  <circle cx="100" cy="90" r="36" fill="url(#body16)" filter="url(#drop16)"/>
+  <!-- Face patch -->
+  <ellipse cx="100" cy="96" rx="23" ry="20" fill="#FFCCBC" opacity="0.8"/>
+
+  <!-- Lion mane (meat type = lion king!) -->
+  <circle cx="100" cy="90" r="44" fill="#FF6F00" opacity="0.25"/>
+  <g opacity="0.5">
+    <ellipse cx="64" cy="76" rx="10" ry="15" fill="#FF8F00" transform="rotate(-20,64,76)"/>
+    <ellipse cx="136" cy="76" rx="10" ry="15" fill="#FF8F00" transform="rotate(20,136,76)"/>
+    <ellipse cx="72" cy="55" rx="9" ry="14" fill="#FFA000" transform="rotate(-40,72,55)"/>
+    <ellipse cx="128" cy="55" rx="9" ry="14" fill="#FFA000" transform="rotate(40,128,55)"/>
+    <ellipse cx="100" cy="50" rx="10" ry="13" fill="#FF8F00"/>
+  </g>
+
+  <!-- Eyes — proud/confident -->
+  <circle cx="88" cy="86" r="9" fill="white"/>
+  <circle cx="112" cy="86" r="9" fill="white"/>
+  <circle cx="90" cy="87" r="6" fill="#4E342E"/>
+  <circle cx="114" cy="87" r="6" fill="#4E342E"/>
+  <circle cx="91.5" cy="85" r="2.5" fill="white"/>
+  <circle cx="115.5" cy="85" r="2.5" fill="white"/>
+
+  <!-- Blush -->
+  <ellipse cx="78" cy="98" rx="10" ry="6" fill="#EF9A9A" opacity="0.5"/>
+  <ellipse cx="122" cy="98" rx="10" ry="6" fill="#EF9A9A" opacity="0.5"/>
+
+  <!-- Lion nose -->
+  <ellipse cx="100" cy="97" rx="6" ry="4" fill="#7F0000"/>
+  <!-- whisker dots -->
+  <circle cx="83" cy="99" r="1.5" fill="#BF360C" opacity="0.6"/>
+  <circle cx="117" cy="99" r="1.5" fill="#BF360C" opacity="0.6"/>
+  <path d="M74 99 L88 99" stroke="#BF360C" stroke-width="1.5" opacity="0.5"/>
+  <path d="M112 99 L126 99" stroke="#BF360C" stroke-width="1.5" opacity="0.5"/>
+  <path d="M91 106 Q100 114 109 106" stroke="#7F0000" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+  <!-- Crispy browning glow on body -->
+  <ellipse cx="100" cy="108" rx="44" ry="10" fill="#FF8F00" opacity="0.08" filter="url(#meatGlow)"/>
+
+  <!-- Steam coming off the meat -->
+  <path d="M78 55 Q80 48 78 42" stroke="#FFCCBC" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.55"/>
+  <path d="M100 49 Q102 42 100 36" stroke="#FFCCBC" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.55"/>
+  <path d="M122 55 Q120 48 122 42" stroke="#FFCCBC" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.55"/>
+</svg>

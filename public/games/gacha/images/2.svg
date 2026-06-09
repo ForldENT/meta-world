@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <radialGradient id="bg3" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#F1F8E9"/>
+      <stop offset="100%" stop-color="#DCEDC8"/>
+    </radialGradient>
+    <radialGradient id="body3" cx="40%" cy="35%" r="60%">
+      <stop offset="0%" stop-color="#A5D6A7"/>
+      <stop offset="55%" stop-color="#4CAF50"/>
+      <stop offset="100%" stop-color="#1B5E20"/>
+    </radialGradient>
+    <radialGradient id="face3" cx="45%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#F9FBE7"/>
+      <stop offset="100%" stop-color="#DCEDC8"/>
+    </radialGradient>
+    <filter id="leafGlow">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="drop3">
+      <feDropShadow dx="2" dy="4" stdDeviation="4" flood-color="rgba(27,94,32,0.2)"/>
+    </filter>
+  </defs>
+
+  <circle cx="100" cy="100" r="90" fill="url(#bg3)" opacity="0.55"/>
+
+  <!-- Leaf crown on head -->
+  <g filter="url(#leafGlow)">
+    <ellipse cx="100" cy="44" rx="8" ry="16" fill="#66BB6A" opacity="0.95"/>
+    <path d="M100 58 Q106 48 100 44 Q94 48 100 58Z" fill="#2E7D32"/>
+    <ellipse cx="82" cy="50" rx="8" ry="14" fill="#81C784" opacity="0.9" transform="rotate(-30,82,50)"/>
+    <path d="M82 62 Q88 52 82 48 Q76 52 82 62Z" fill="#2E7D32" transform="rotate(-30,82,50)"/>
+    <ellipse cx="118" cy="50" rx="8" ry="14" fill="#81C784" opacity="0.9" transform="rotate(30,118,50)"/>
+    <path d="M118 62 Q124 52 118 48 Q112 52 118 62Z" fill="#2E7D32" transform="rotate(30,118,50)"/>
+  </g>
+
+  <!-- Body -->
+  <ellipse cx="100" cy="130" rx="42" ry="40" fill="url(#body3)" filter="url(#drop3)"/>
+  <!-- Tummy -->
+  <ellipse cx="100" cy="132" rx="25" ry="26" fill="url(#face3)"/>
+  <!-- Leaf pattern on tummy -->
+  <ellipse cx="100" cy="128" rx="8" ry="13" fill="#A5D6A7" opacity="0.4"/>
+  <path d="M100 140 Q104 132 100 126 Q96 132 100 140Z" fill="#4CAF50" opacity="0.3"/>
+
+  <!-- Arms -->
+  <ellipse cx="62" cy="126" rx="13" ry="10" fill="#4CAF50" transform="rotate(-25,62,126)"/>
+  <ellipse cx="138" cy="126" rx="13" ry="10" fill="#4CAF50" transform="rotate(25,138,126)"/>
+  <circle cx="52" cy="136" r="10" fill="#A5D6A7"/>
+  <circle cx="148" cy="136" r="10" fill="#A5D6A7"/>
+
+  <!-- Legs -->
+  <ellipse cx="82" cy="163" rx="14" ry="9" fill="#4CAF50"/>
+  <ellipse cx="118" cy="163" rx="14" ry="9" fill="#4CAF50"/>
+  <ellipse cx="80" cy="171" rx="13" ry="7" fill="#A5D6A7"/>
+  <ellipse cx="120" cy="171" rx="13" ry="7" fill="#A5D6A7"/>
+
+  <!-- Head -->
+  <circle cx="100" cy="90" r="36" fill="url(#body3)" filter="url(#drop3)"/>
+  <ellipse cx="100" cy="95" rx="22" ry="19" fill="url(#face3)"/>
+
+  <!-- Bunny ears with broccoli tips -->
+  <ellipse cx="74" cy="56" rx="9" ry="20" fill="#4CAF50"/>
+  <ellipse cx="74" cy="56" rx="5" ry="15" fill="#A5D6A7"/>
+  <circle cx="74" cy="38" r="10" fill="#2E7D32"/>
+  <circle cx="72" cy="37" r="5" fill="#4CAF50"/>
+
+  <ellipse cx="126" cy="56" rx="9" ry="20" fill="#4CAF50"/>
+  <ellipse cx="126" cy="56" rx="5" ry="15" fill="#A5D6A7"/>
+  <circle cx="126" cy="38" r="10" fill="#2E7D32"/>
+  <circle cx="124" cy="37" r="5" fill="#4CAF50"/>
+
+  <!-- Eyes -->
+  <circle cx="88" cy="87" r="8" fill="white"/>
+  <circle cx="112" cy="87" r="8" fill="white"/>
+  <circle cx="90" cy="88" r="5" fill="#1B5E20"/>
+  <circle cx="114" cy="88" r="5" fill="#1B5E20"/>
+  <circle cx="91" cy="86" r="2" fill="white"/>
+  <circle cx="115" cy="86" r="2" fill="white"/>
+
+  <!-- Blush -->
+  <ellipse cx="78" cy="97" rx="9" ry="6" fill="#A5D6A7" opacity="0.65"/>
+  <ellipse cx="122" cy="97" rx="9" ry="6" fill="#A5D6A7" opacity="0.65"/>
+
+  <!-- Nose -->
+  <ellipse cx="100" cy="97" rx="4" ry="3" fill="#2E7D32"/>
+  <path d="M91 104 Q100 112 109 104" stroke="#2E7D32" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+  <!-- Floating leaves -->
+  <ellipse cx="62" cy="104" rx="5" ry="9" fill="#81C784" opacity="0.6" transform="rotate(-40,62,104)"/>
+  <ellipse cx="140" cy="100" rx="5" ry="9" fill="#66BB6A" opacity="0.6" transform="rotate(30,140,100)"/>
+</svg>

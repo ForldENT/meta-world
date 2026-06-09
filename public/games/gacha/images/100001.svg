@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <radialGradient id="bg11" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FCE4EC"/>
+      <stop offset="100%" stop-color="#F8BBD0"/>
+    </radialGradient>
+    <radialGradient id="body11" cx="40%" cy="35%" r="60%">
+      <stop offset="0%" stop-color="#FF80AB"/>
+      <stop offset="55%" stop-color="#F06292"/>
+      <stop offset="100%" stop-color="#880E4F"/>
+    </radialGradient>
+    <radialGradient id="candy" cx="30%" cy="30%" r="60%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="40%" stop-color="#FF80AB"/>
+      <stop offset="100%" stop-color="#E91E63"/>
+    </radialGradient>
+    <filter id="sweetGlow">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="drop11">
+      <feDropShadow dx="2" dy="4" stdDeviation="4" flood-color="rgba(136,14,79,0.2)"/>
+    </filter>
+  </defs>
+
+  <circle cx="100" cy="100" r="90" fill="url(#bg11)" opacity="0.55"/>
+
+  <!-- Lollipop ears -->
+  <circle cx="68" cy="58" r="18" fill="url(#candy)" filter="url(#sweetGlow)"/>
+  <path d="M68,58 M65 48 Q56 52 58 62 Q60 70 68 68 Q78 66 78 56 Q78 46 68 46 Q58 46 58 56" fill="none" stroke="#E91E63" stroke-width="2.5" opacity="0.5"/>
+  <line x1="68" y1="74" x2="68" y2="86" stroke="#880E4F" stroke-width="3" stroke-linecap="round"/>
+
+  <circle cx="132" cy="58" r="18" fill="url(#candy)" filter="url(#sweetGlow)"/>
+  <path d="M132,58 M129 48 Q120 52 122 62 Q124 70 132 68 Q142 66 142 56 Q142 46 132 46 Q122 46 122 56" fill="none" stroke="#E91E63" stroke-width="2.5" opacity="0.5"/>
+  <line x1="132" y1="74" x2="132" y2="86" stroke="#880E4F" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Body -->
+  <ellipse cx="100" cy="130" rx="42" ry="40" fill="url(#body11)" filter="url(#drop11)"/>
+  <!-- candy stripe on tummy -->
+  <ellipse cx="100" cy="130" rx="26" ry="27" fill="#FCE4EC" opacity="0.7"/>
+  <path d="M88 114 Q100 116 112 114" stroke="#F48FB1" stroke-width="3" fill="none"/>
+  <path d="M86 122 Q100 124 114 122" stroke="#F48FB1" stroke-width="2.5" fill="none"/>
+  <path d="M86 130 Q100 132 114 130" stroke="#F48FB1" stroke-width="2.5" fill="none"/>
+  <path d="M88 138 Q100 140 112 138" stroke="#F48FB1" stroke-width="2" fill="none"/>
+
+  <!-- Arms -->
+  <ellipse cx="62" cy="126" rx="13" ry="10" fill="#F06292" transform="rotate(-25,62,126)"/>
+  <ellipse cx="138" cy="126" rx="13" ry="10" fill="#F06292" transform="rotate(25,138,126)"/>
+  <circle cx="52" cy="136" r="10" fill="#FF80AB"/>
+  <circle cx="148" cy="136" r="10" fill="#FF80AB"/>
+
+  <!-- Legs -->
+  <ellipse cx="82" cy="163" rx="14" ry="9" fill="#F06292"/>
+  <ellipse cx="118" cy="163" rx="14" ry="9" fill="#F06292"/>
+  <ellipse cx="80" cy="171" rx="13" ry="7" fill="#FF80AB"/>
+  <ellipse cx="120" cy="171" rx="13" ry="7" fill="#FF80AB"/>
+
+  <!-- Head -->
+  <circle cx="100" cy="90" r="36" fill="url(#body11)" filter="url(#drop11)"/>
+  <ellipse cx="100" cy="95" rx="22" ry="19" fill="#FCE4EC" opacity="0.8"/>
+
+  <!-- Eyes — big sparkly -->
+  <circle cx="88" cy="86" r="9" fill="white"/>
+  <circle cx="112" cy="86" r="9" fill="white"/>
+  <circle cx="90" cy="87" r="6" fill="#880E4F"/>
+  <circle cx="114" cy="87" r="6" fill="#880E4F"/>
+  <circle cx="91.5" cy="85" r="2.5" fill="white"/>
+  <circle cx="115.5" cy="85" r="2.5" fill="white"/>
+  <circle cx="89" cy="89" r="1" fill="white"/>
+  <circle cx="113" cy="89" r="1" fill="white"/>
+
+  <!-- Blush hearts -->
+  <path d="M74 97 C74 94 70 94 70 97 C70 100 74 103 74 103 C74 103 78 100 78 97 C78 94 74 94 74 97Z" fill="#F48FB1" opacity="0.7"/>
+  <path d="M126 97 C126 94 122 94 122 97 C122 100 126 103 126 103 C126 103 130 100 130 97 C130 94 126 94 126 97Z" fill="#F48FB1" opacity="0.7"/>
+
+  <!-- Nose -->
+  <ellipse cx="100" cy="97" rx="4" ry="3" fill="#880E4F"/>
+  <path d="M91 104 Q100 113 109 104" stroke="#880E4F" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+  <!-- Candy sprinkles floating -->
+  <g filter="url(#sweetGlow)">
+    <rect x="59" y="105" width="8" height="3" rx="1.5" fill="#FF4081" transform="rotate(-30,63,106.5)" opacity="0.8"/>
+    <rect x="133" y="102" width="8" height="3" rx="1.5" fill="#FFEB3B" transform="rotate(20,137,103.5)" opacity="0.8"/>
+    <rect x="63" y="120" width="7" height="3" rx="1.5" fill="#69F0AE" transform="rotate(40,66.5,121.5)" opacity="0.7"/>
+    <rect x="130" y="118" width="7" height="3" rx="1.5" fill="#40C4FF" transform="rotate(-20,133.5,119.5)" opacity="0.7"/>
+  </g>
+</svg>
